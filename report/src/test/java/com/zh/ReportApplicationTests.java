@@ -1,4 +1,4 @@
-package com.zh.report;
+package com.zh;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
