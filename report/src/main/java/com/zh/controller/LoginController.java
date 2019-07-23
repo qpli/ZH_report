@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,13 @@ public class LoginController {
     @Autowired
     Emp_service emp_service;
 
+    @RequestMapping(path = {"/","/index"})
+    @ResponseBody
+    public ModelAndView loginIndex(){
+        ModelAndView view = new ModelAndView("/login.html");
+
+        return view;
+    }
 
     @RequestMapping(path = {"/reg1/"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
@@ -43,6 +51,15 @@ public class LoginController {
     }
 
 
+    /**
+     * 用户注册
+     * @param username
+     * @param password
+     * @param empId
+     * @param rememberme
+     * @param response
+     * @return
+     */
     @RequestMapping(path = {"/reg/"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String reg(@RequestParam("username") String username,
@@ -72,6 +89,14 @@ public class LoginController {
     }
 
 
+    /**
+     *  登陆功能
+     * @param emp_id
+     * @param password
+     * @param rememberme
+     * @param response
+     * @return
+     */
     @RequestMapping(path = {"/login/"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String login(@RequestParam("username") String emp_id,
