@@ -6,7 +6,7 @@ package com.zh.Entity;
 public class Employee {
     private String emp_id;
     private String name;
-    private int ord_id;
+    private int org_id;
     private int role_id;
     private String password;
     private String salt;
@@ -29,11 +29,11 @@ public class Employee {
     }
 
     public int getOrd_id() {
-        return ord_id;
+        return org_id;
     }
 
     public void setOrd_id(int ord_id) {
-        this.ord_id = ord_id;
+        this.org_id = ord_id;
     }
 
     public int getRole_id() {

@@ -6,6 +6,7 @@ import java.util.Date;
  * Created by lqp on 2019/7/22
  */
 public class Login_ticket {
+
     private int id;
     private String emp_id;
     private String ticket;
