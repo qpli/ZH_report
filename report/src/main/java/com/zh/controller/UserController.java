@@ -17,7 +17,7 @@ public class UserController {
     @Autowired
     private Emp_service emp_service;
     @ResponseBody
-    @RequestMapping(path = {"/"},method = {RequestMethod.GET})
+    @RequestMapping(path = {"/user"},method = {RequestMethod.GET})
 //    @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String getEmpInfo(){
         return emp_service.findAllEmp().getName();
