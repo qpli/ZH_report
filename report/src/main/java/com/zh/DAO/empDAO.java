@@ -20,13 +20,13 @@ public interface empDAO {
 
 
     @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
-            ") values (#{name},#{password},#{salt},#{headUrl})"})
+            ") values (#{emp_id},#{name},#{password},#{salt},#{role_id},#{org_id})"})
     int addUser(Employee emp);
 
     @Select({"select * from ", TABLE_NAME })
     List<Employee> findAllEmp( );
 
-    @Select({"select emp_id from ", TABLE_NAME ," where emp_id = #{emp_id}" })
+    @Select({"select * from ", TABLE_NAME ," where emp_id = #{emp_id}" })
     Employee selectByEmpId(String emp_id);
 
 
