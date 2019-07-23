@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class Login_ticket {
     private int id;
-    private int emp_id;
+    private String emp_id;
     private String ticket;
     private Date expired;
     private int status;
@@ -20,11 +20,11 @@ public class Login_ticket {
         this.id = id;
     }
 
-    public int getEmp_id() {
+    public String getEmp_id() {
         return emp_id;
     }
 
-    public void setEmp_id(int emp_id) {
+    public void setEmp_id(String emp_id) {
         this.emp_id = emp_id;
     }
 

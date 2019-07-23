@@ -14,9 +14,9 @@ import java.util.List;
 @Mapper
 @Component
 public interface empDAO {
-    final  String TABLE_NAME = "emp_info";
-     final String INSET_FIELDS = " name, password, salt, role_id, org_id";
-     String SELECT_FIELDS = " id, name, password, salt, role_id, org_id,del_flag";
+     final  String TABLE_NAME = "emp_info";
+     final String INSET_FIELDS = " emp_id,name, password, salt, role_id, org_id";
+     String SELECT_FIELDS = " emp_id, name, password, salt, role_id, org_id,del_flag";
 
 
     @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
@@ -25,4 +25,11 @@ public interface empDAO {
 
     @Select({"select * from ", TABLE_NAME })
     List<Employee> findAllEmp( );
+
+    @Select({"select emp_id from ", TABLE_NAME ," where emp_id = #{emp_id}" })
+    Employee selectByEmpId(String emp_id);
+
+
+
+
 }

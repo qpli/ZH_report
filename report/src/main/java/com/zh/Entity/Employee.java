@@ -4,7 +4,7 @@ package com.zh.Entity;
  * Created by lqp on 2019/7/22
  */
 public class Employee {
-    private int emp_id;
+    private String emp_id;
     private String name;
     private int ord_id;
     private int role_id;
@@ -12,11 +12,11 @@ public class Employee {
     private String salt;
     private int del_flag;
 
-    public int getEmp_id() {
+    public String getEmp_id() {
         return emp_id;
     }
 
-    public void setEmp_id(int emp_id) {
+    public void setEmp_id(String emp_id) {
         this.emp_id = emp_id;
     }
 
