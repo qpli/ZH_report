@@ -29,10 +29,12 @@ public class LoginController {
     public ModelAndView loginIndex(){
         ModelAndView view = new ModelAndView("/login.html");
 
+        Employee emp = new Employee();
+        view.addObject("user",emp);
         return view;
     }
 
-    @RequestMapping(path = {"/reg1/"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(path = {"/reg1"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String reg(@RequestParam("username") String username,
                       @RequestParam("password") String password,
@@ -60,7 +62,7 @@ public class LoginController {
      * @param response
      * @return
      */
-    @RequestMapping(path = {"/reg/"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(path = {"/reg"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String reg(@RequestParam("username") String username,
                       @RequestParam("password") String password,
@@ -97,7 +99,7 @@ public class LoginController {
      * @param response
      * @return
      */
-    @RequestMapping(path = {"/login/"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(path = {"/login"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String login(@RequestParam("username") String emp_id,
                         @RequestParam("password") String password,
@@ -124,7 +126,7 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(path = {"/logout/"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(path = {"/logout"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String logout(@CookieValue("ticket") String ticket) {
         emp_service.logout(ticket);
         return "redirect:/";
