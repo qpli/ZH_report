@@ -21,10 +21,18 @@ public interface FillInfoDAO {
     final String INSET_FIELDS = " col_id, emp_id, context, fillDatetime, status";
     String SELECT_FIELDS = " fill_id, col_id, emp_id, context, fillDatetime, status, del_flag";
 
+    /**
+     * 团员填写列信息写入数据库
+     * @param fillInfo
+     * @return
+     */
     @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
             ") values (#{colId},#{empID},#{context},#{fillDatetime},#{status})"})
     //@Options(keyProperty="fill_id",keyColumn="fillId",useGeneratedKeys=true)
     int addFileInfo(FillInfo fillInfo);
+
+    @Select({"select col_id, emp_id from "+TABLE_NAME+" where col_id = #{col_id} and emp_id = #{emp_id}"})
+    List<FillInfo> existColIdAndEmpId(Integer col_id,String emp_id);
 
     /**
      * 团队长审核页面的展示结果

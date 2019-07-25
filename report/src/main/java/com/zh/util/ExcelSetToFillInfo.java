@@ -1,15 +1,8 @@
 package com.zh.util;
 
-import com.zh.Entity.Excel.ExcelSet;
-import com.zh.Entity.Excel.ExcelSheet;
-import com.zh.Entity.FillInfo;
 import com.zh.Entity.HostHolder;
 import com.zh.service.ColInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by lqp on 2019/7/25
@@ -21,7 +14,7 @@ public class ExcelSetToFillInfo {
     HostHolder hostHolder;
     @Autowired
     ColInfoService colInfoService;
-
+/*
     public  List<FillInfo> excelToFillInfo(ExcelSet excelSet,Integer reportID){
         List<FillInfo> fillInfolist = new LinkedList<>();
 
@@ -50,7 +43,7 @@ public class ExcelSetToFillInfo {
         }
         return fillInfolist;
     }
-
+*/
 
     public static boolean isAllNull(StringBuilder sb){
         String[] strs = sb.toString().split(",");

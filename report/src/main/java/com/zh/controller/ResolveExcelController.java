@@ -95,9 +95,15 @@ public class ResolveExcelController {
 
             logger.info(JSON.toJSONString(excelSet));
 
-            fillInfoService.addFileInfo(excelToFillInfo(excelSet,reportId));
-
-            return view.addObject("upload", excelSet);
+            List<FillInfo> fillInfolist = excelToFillInfo(excelSet,reportId);
+            logger.info("fillInfoList是否为空？"+fillInfolist.isEmpty());
+            if(!fillInfolist.isEmpty()) {
+                fillInfoService.addFileInfo(fillInfolist);
+                return view.addObject("upload", excelSet);
+            }
+            else{
+                return view.addObject("upload", "报表已上传，请勿重复上传");
+            }
         } catch (Exception e) {
             System.out.println("上传excel出现异常");
             e.printStackTrace();
@@ -144,6 +150,11 @@ public class ResolveExcelController {
                 fillInfo_context.append(",");
             }
             if(ExcelSetToFillInfo.isAllNull(fillInfo_context)){
+                logger.info(JSON.toJSONString("该列全为空"));
+                continue;
+            }
+            if(fillInfoService.existColIdAndEmpId(colInfoService.selectColIDByReportIdAndColLoc(reportID,i),"lisi")){
+                logger.info(JSON.toJSONString("该列已存在"));
                 continue;
             }
             else {
