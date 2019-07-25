@@ -1,5 +1,10 @@
 package com.zh.Entity;
 
+/**
+ * @Author: lisq
+ * @Date: 2019/7/25 14:41
+ * @Description:
+ */
 public class ColInfo {
     Integer colId;
     Integer reportId;

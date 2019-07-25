@@ -2,6 +2,11 @@ package com.zh.Entity;
 
 import java.util.Date;
 
+/**
+ * @Author: lisq
+ * @Date: 2019/7/25 14:41
+ * @Description:
+ */
 public class ReportInfo {
     Integer reportId;
     String empId;

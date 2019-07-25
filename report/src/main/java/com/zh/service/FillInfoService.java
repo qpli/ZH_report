@@ -22,4 +22,22 @@ public class FillInfoService {
         return 1;
     }
 
+    /**
+     * 查询填了该报表的所有记录
+     * @return
+     */
+    public List<FillInfo> fillReportAll(Integer reportId){
+        return fillInfoDAO.selectByReportId(reportId);
+    }
+
+    /**
+     * 更新填表状态
+     * @param fillId
+     * @param status
+     */
+    public void update(Integer fillId){
+        System.out.println("id1:"+fillId);
+        fillInfoDAO.updateStatus(fillId);
+    }
+
 }

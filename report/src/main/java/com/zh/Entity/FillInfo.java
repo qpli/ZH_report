@@ -2,11 +2,18 @@ package com.zh.Entity;
 
 import java.util.Date;
 
+/**
+ * @Author: lisq
+ * @Date: 2019/7/25 14:41
+ * @Description:
+ */
 public class FillInfo {
 
     Integer fillId;
     Integer colId;
     String empID;
+    String colName;//列名字
+    String name; //用户名字
     String context;
     Date fillDatetime;
     Integer status;
@@ -66,5 +73,21 @@ public class FillInfo {
 
     public void setDelFlag(Integer delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public String getColName() {
+        return colName;
+    }
+
+    public void setColName(String colName) {
+        this.colName = colName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        name = name;
     }
 }
