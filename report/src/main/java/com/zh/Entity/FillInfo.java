@@ -3,6 +3,7 @@ package com.zh.Entity;
 import java.util.Date;
 
 public class FillInfo {
+
     Integer fillId;
     Integer colId;
     String empID;

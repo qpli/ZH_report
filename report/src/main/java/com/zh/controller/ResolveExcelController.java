@@ -1,7 +1,10 @@
 package com.zh.controller;
 
 import com.zh.Entity.Excel.ExcelSet;
+import com.zh.Entity.HostHolder;
+import com.zh.service.FillInfoService;
 import com.zh.service.ResolveExcelService;
+import com.zh.util.ExcelSetToFillInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +30,16 @@ public class ResolveExcelController {
     private static Logger logger = LoggerFactory.getLogger(ResolveExcelController.class);
 
     @Autowired
+    HostHolder hostHolder;
+
+    @Autowired
     private ResolveExcelService resolveExcelService;
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    private FillInfoService fillInfoService;
 
 //    @RequestMapping(value = "/excel")
 //    public ModelAndView hello() {
@@ -73,6 +82,8 @@ public class ResolveExcelController {
             //解析，返回结果
             ExcelSet excelSet = resolveExcelService.resolveExcel(uploadFile.getAbsolutePath());
 
+            fillInfoService.addFileInfo(ExcelSetToFillInfo.excelToFillInfo(excelSet));
+
             return view.addObject("upload", excelSet);
         } catch (Exception e) {
             System.out.println("上传excel出现异常");
@@ -81,6 +92,10 @@ public class ResolveExcelController {
         }
 
     }
+
+
+
+
 
     /**
      * 判断Excel文件后缀名是否正确
