@@ -35,9 +35,8 @@ public class FillInfoService {
      * @param fillId
      * @param status
      */
-    public void update(Integer fillId){
-        System.out.println("id1:"+fillId);
-        fillInfoDAO.updateStatus(fillId);
+    public void update(Integer fillId,Integer status){
+        fillInfoDAO.updateStatus(fillId,status);
     }
 
 }

@@ -83,15 +83,12 @@ public class ReportController {
      */
     @PostMapping("/audit")
     @ResponseBody
-    public JsonResult audit(int ids){
-//        for(int i = 0 ; i<ids.length ; i++){
-//            if (status[i] != 0){
-//                System.out.println("id:"+ids[i]+" status:"+status[i]);
-//                fillInfoService.update(ids[i],status[i]);
-//            }
-//        }
-
-        fillInfoService.update(ids);
+    public JsonResult audit(int[] ids,int[] status){
+        for(int i = 0 ; i<ids.length ; i++){
+            if (status[i] != 0){
+                fillInfoService.update(ids[i],status[i]);
+            }
+        }
         return JsonResult.success();
     }
 

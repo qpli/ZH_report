@@ -1,9 +1,13 @@
 package com.zh.DAO;
 
 import com.zh.Entity.FillInfo;
+<<<<<<< HEAD
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+=======
+import org.apache.ibatis.annotations.*;
+>>>>>>> 820f8ad4457d8160891589698c8e9258206b3049
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -38,9 +42,9 @@ public interface FillInfoDAO {
 
     /**
      * 更改团队长审核状态
-     * @param id
-     * @param status  update ZH_report.dbo.fill_info set status = 1 where fill_id = 2
+     * @param fillId
+     * @param sta  update ZH_report.dbo.fill_info set status = 1 where fill_id = 2
      */
-    @Select({"select status from ",TABLE_NAME," where fill_id = #{fillId}"})
-    FillInfo updateStatus(Integer fillId);
+    @Update({"update ",TABLE_NAME," set status = #{sta} where fill_id = #{fillId}"})
+    int updateStatus(@Param("fillId") Integer fillId, @Param("sta") Integer sta);
 }
