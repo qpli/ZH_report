@@ -1,13 +1,10 @@
 package com.zh.DAO;
 
 import com.zh.Entity.FillInfo;
-<<<<<<< HEAD
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-=======
 import org.apache.ibatis.annotations.*;
->>>>>>> 820f8ad4457d8160891589698c8e9258206b3049
 import org.springframework.stereotype.Component;
 
 import java.util.List;
