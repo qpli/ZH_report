@@ -1,5 +1,6 @@
 package com.zh.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.zh.Entity.Excel.ExcelSet;
 import com.zh.Entity.HostHolder;
 import com.zh.service.FillInfoService;
@@ -56,7 +57,9 @@ public class ResolveExcelController {
     }
 
     @RequestMapping(value = "/uploadExcel",method = {RequestMethod.POST})
-    public ModelAndView uploadExcel(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
+    public ModelAndView uploadExcel(HttpServletRequest request,
+                                    @RequestParam("file") MultipartFile file,
+                                    @RequestParam("reportId") Integer reportId) {
 
         ModelAndView view = new ModelAndView(new MappingJackson2JsonView());
 //        ModelAndView view = new ModelAndView( );
@@ -82,6 +85,7 @@ public class ResolveExcelController {
             //解析，返回结果
             ExcelSet excelSet = resolveExcelService.resolveExcel(uploadFile.getAbsolutePath());
 
+            logger.info(JSON.toJSONString(excelSet));
             fillInfoService.addFileInfo(ExcelSetToFillInfo.excelToFillInfo(excelSet));
 
             return view.addObject("upload", excelSet);

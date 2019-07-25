@@ -34,6 +34,14 @@ public class LoginController {
         return view;
     }
 
+    /**
+     * 测试注册
+     * @param username
+     * @param password
+     * @param empId
+     * @param rememberme
+     * @return
+     */
     @RequestMapping(path = {"/reg1"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String reg(@RequestParam("username") String username,
