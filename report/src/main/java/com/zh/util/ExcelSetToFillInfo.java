@@ -18,7 +18,7 @@ public class ExcelSetToFillInfo {
     @Autowired
     HostHolder hostHolder;
 
-    public static List<FillInfo> excelToFillInfo(ExcelSet excelSet,Integer reportID,String EmpID){
+    public static List<FillInfo> excelToFillInfo(ExcelSet excelSet){
         List<FillInfo> fillInfolist = new LinkedList<>();
 
         List<ExcelSheet> excelSheetList = excelSet.getSheets();
@@ -35,7 +35,7 @@ public class ExcelSetToFillInfo {
 
             fillInfo.setColId(i);  //如何获取列ID
             fillInfo.setDelFlag(0);
-            fillInfo.setEmpID(EmpID);  //如何获取用户名
+            fillInfo.setEmpID("lisi");  //如何获取用户名
             fillInfo.setFillDatetime(new Date());
 //            fillInfo.setFillId(i+10);
             fillInfo.setStatus(1);
