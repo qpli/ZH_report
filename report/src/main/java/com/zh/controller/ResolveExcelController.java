@@ -2,7 +2,10 @@ package com.zh.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.zh.Entity.Excel.ExcelSet;
+import com.zh.Entity.Excel.ExcelSheet;
+import com.zh.Entity.FillInfo;
 import com.zh.Entity.HostHolder;
+import com.zh.service.ColInfoService;
 import com.zh.service.FillInfoService;
 import com.zh.service.ResolveExcelService;
 import com.zh.util.ExcelSetToFillInfo;
@@ -20,6 +23,9 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -41,6 +47,8 @@ public class ResolveExcelController {
 
     @Autowired
     private FillInfoService fillInfoService;
+    @Autowired
+    private ColInfoService colInfoService;
 
 //    @RequestMapping(value = "/excel")
 //    public ModelAndView hello() {
@@ -86,7 +94,8 @@ public class ResolveExcelController {
             ExcelSet excelSet = resolveExcelService.resolveExcel(uploadFile.getAbsolutePath());
 
             logger.info(JSON.toJSONString(excelSet));
-            fillInfoService.addFileInfo(ExcelSetToFillInfo.excelToFillInfo(excelSet));
+
+            fillInfoService.addFileInfo(excelToFillInfo(excelSet,reportId));
 
             return view.addObject("upload", excelSet);
         } catch (Exception e) {
@@ -118,5 +127,37 @@ public class ResolveExcelController {
             return false;
         }
     }
+
+
+
+    public  List<FillInfo> excelToFillInfo(ExcelSet excelSet, Integer reportID){
+        List<FillInfo> fillInfolist = new LinkedList<>();
+
+        List<ExcelSheet> excelSheetList = excelSet.getSheets();
+        ExcelSheet excelSheet = excelSheetList.get(0);
+        List<List<String>> content = excelSheet.getContent();
+        for(int i=0;i<content.get(0).size();i++){
+            FillInfo fillInfo = new FillInfo();
+            StringBuilder fillInfo_context = new StringBuilder();
+            for(int j = 1;j<content.size();j++){
+                fillInfo_context.append(content.get(j).get(i));
+                fillInfo_context.append(",");
+            }
+            if(ExcelSetToFillInfo.isAllNull(fillInfo_context)){
+                continue;
+            }
+            else {
+                fillInfo.setContext(fillInfo_context.toString());
+                fillInfo.setColId(colInfoService.selectColIDByReportIdAndColLoc(reportID,i));  //如何获取列ID
+                fillInfo.setDelFlag(0);
+                fillInfo.setEmpID("lisi");  //如何获取用户名
+                fillInfo.setFillDatetime(new Date());
+                fillInfo.setStatus(1);
+                fillInfolist.add(fillInfo);
+            }
+        }
+        return fillInfolist;
+    }
+
 
 }

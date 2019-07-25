@@ -1,7 +1,6 @@
 package com.zh.DAO;
 
 import com.zh.Entity.ColInfo;
-import com.zh.Entity.ReportInfo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -25,5 +24,10 @@ public interface ColInfoDAO {
      */
     @Insert({"insert into ", tableName,"(",field ,") values (#{reportId},#{colName},#{colLoc},#{status})"})
     int add(ColInfo colInfo);
+
+    @Select({"select col_id from "+tableName+" where REPORT_ID = #{reportId} and col_loc = #{col_loc}" })
+    int selectColIDByReportIdAndColLoc(Integer reportId,Integer col_loc);
+
+
 
 }

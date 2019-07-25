@@ -4,6 +4,7 @@ import com.zh.Entity.Excel.ExcelSet;
 import com.zh.Entity.Excel.ExcelSheet;
 import com.zh.Entity.FillInfo;
 import com.zh.Entity.HostHolder;
+import com.zh.service.ColInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
@@ -13,12 +14,15 @@ import java.util.List;
 /**
  * Created by lqp on 2019/7/25
  */
+
 public class ExcelSetToFillInfo {
 
     @Autowired
     HostHolder hostHolder;
+    @Autowired
+    ColInfoService colInfoService;
 
-    public static List<FillInfo> excelToFillInfo(ExcelSet excelSet){
+    public  List<FillInfo> excelToFillInfo(ExcelSet excelSet,Integer reportID){
         List<FillInfo> fillInfolist = new LinkedList<>();
 
         List<ExcelSheet> excelSheetList = excelSet.getSheets();
@@ -31,16 +35,34 @@ public class ExcelSetToFillInfo {
                 fillInfo_context.append(content.get(j).get(i));
                 fillInfo_context.append(",");
             }
-            fillInfo.setContext(fillInfo_context.toString());
-
-            fillInfo.setColId(i);  //如何获取列ID
-            fillInfo.setDelFlag(0);
-            fillInfo.setEmpID("lisi");  //如何获取用户名
-            fillInfo.setFillDatetime(new Date());
-//            fillInfo.setFillId(i+10);
-            fillInfo.setStatus(1);
-            fillInfolist.add(fillInfo);
+            if(ExcelSetToFillInfo.isAllNull(fillInfo_context)){
+                continue;
+            }
+            else {
+                fillInfo.setContext(fillInfo_context.toString());
+                fillInfo.setColId(colInfoService.selectColIDByReportIdAndColLoc(reportID,i));  //如何获取列ID
+                fillInfo.setDelFlag(0);
+                fillInfo.setEmpID("lisi");  //如何获取用户名
+                fillInfo.setFillDatetime(new Date());
+                fillInfo.setStatus(1);
+                fillInfolist.add(fillInfo);
+            }
         }
         return fillInfolist;
+    }
+
+
+    public static boolean isAllNull(StringBuilder sb){
+        String[] strs = sb.toString().split(",");
+        int nullCount = 0;
+        for(int i = 0;i<strs.length;i++){
+            if(strs[i].equals("null")){
+                nullCount++;
+            }
+        }
+        if(nullCount==strs.length)
+            return true;
+        else
+            return false;
     }
 }

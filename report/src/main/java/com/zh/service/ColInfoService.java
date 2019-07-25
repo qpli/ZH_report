@@ -31,4 +31,9 @@ public class ColInfoService {
             colInfoDAO.add(colInfo);
         }
     }
+
+    public Integer selectColIDByReportIdAndColLoc(Integer reportId,Integer col_loc){
+        return colInfoDAO.selectColIDByReportIdAndColLoc(reportId,col_loc+1);
+    }
+
 }
