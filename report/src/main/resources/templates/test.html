@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试</title>
+</head>
+<body>
+<input name="reportId" id="id">
+<button value="导出" id="export"></button>
+<script>
+    $('#export').click(function() {
+
+        var reportId = $("#id").val() == "";
+        $.ajax({
+            type: "POST",
+            url: "/excel/export",
+            data: {"reportId":reportId},
+            success: function(data) {
+                if (data.code == 0) {
+                    alert('操作成功');
+                    window.location.href = '/member/member';
+                }
+                else {
+                    $("#btn_login").attr("disabled", false);
+                    $("#btn_login").val("登陆");
+                    alert("用户或密码错误！");
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

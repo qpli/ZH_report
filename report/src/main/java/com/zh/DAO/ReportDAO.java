@@ -1,10 +1,13 @@
 package com.zh.DAO;
 
+import com.zh.Entity.FinalReport;
 import com.zh.Entity.ReportInfo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @Author: lisq
@@ -33,5 +36,31 @@ public interface ReportDAO {
     @Select({"select * from ",tableName, " where report_name = #{reportName}"})
     ReportInfo selectByName(String reportName);
 
+    /**
+     * 查询所有报表
+     * @return
+     */
+    @Select({"SELECT rep.REPORT_ID,org.ORG_NAME,rep.REPORT_NAME " +
+            "FROM report_info rep,org_info org " +
+            "where rep.EMP_ID = org.EMP_ID"})
+    List<ReportInfo> getAllReport();
 
+    /**
+     * 查询员工所在团队的所有报表
+     * @param empId
+     * @return
+     */
+    @Select({"SELECT rep.REPORT_ID,org.ORG_NAME,rep.REPORT_NAME \n" +
+            "FROM report_info rep,org_info org ,EMP_INFO emp\n" +
+            "where emp.EMP_ID = #{empId} and emp.ORG_ID = org.ORG_ID and rep.EMP_ID = org.EMP_ID"})
+    List<ReportInfo> getAllReportInteam(String empId);
+
+    /**
+     *
+     * @param reportId
+     * @return
+     */
+    @Select({"select REPORT_NAME\n" +
+            "  FROM ",tableName," where REPORT_ID = #{reportId}"})
+    String getReportName(Integer reportId);
 }

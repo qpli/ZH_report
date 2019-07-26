@@ -14,6 +14,7 @@ public class ReportInfo {
     Date creattime;
     String bussKey;
     Integer delFlag;
+    String orgName;
 
     public Integer getReportId() {
         return reportId;
@@ -61,5 +62,13 @@ public class ReportInfo {
 
     public void setDelFlag(Integer delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 }

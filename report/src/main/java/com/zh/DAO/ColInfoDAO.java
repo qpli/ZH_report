@@ -1,6 +1,7 @@
 package com.zh.DAO;
 
 import com.zh.Entity.ColInfo;
+import com.zh.Entity.FinalReport;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -28,6 +29,13 @@ public interface ColInfoDAO {
     @Select({"select col_id from "+tableName+" where REPORT_ID = #{reportId} and col_loc = #{col_loc}" })
     int selectColIDByReportIdAndColLoc(Integer reportId,Integer col_loc);
 
-
+    /**
+     * 查询指定报表的列信息
+     * @param reportId
+     * @return
+     */
+    @Select({"SELECT col_name\n" +
+            "  FROM ",tableName ," where REPORT_ID = #{reportId} order by col_loc"})
+    String[] queryExcel(Integer reportId);
 
 }

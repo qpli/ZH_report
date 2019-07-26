@@ -36,4 +36,13 @@ public class ColInfoService {
         return colInfoDAO.selectColIDByReportIdAndColLoc(reportId,col_loc+1);
     }
 
+    /**
+     * 获取指定报表模板
+     * @param reportId
+     * @return
+     */
+    public String[] queryExcel(Integer reportId){
+        return colInfoDAO.queryExcel(reportId);
+    }
+
 }
