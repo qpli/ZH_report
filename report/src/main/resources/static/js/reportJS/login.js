@@ -24,8 +24,6 @@ $(function() {
                 $("#btn_login").val("正在登陆...");
             },
             success: function(data) {
-                alert(111);
-                console.log(data);
                 if (data.code == '0') {
                     console.log("进入成功")
                     window.location.href = '/loginSuccess';

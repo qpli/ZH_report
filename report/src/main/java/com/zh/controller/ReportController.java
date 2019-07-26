@@ -172,8 +172,10 @@ public class ReportController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/get.do")
+    @ResponseBody
     public ModelAndView index(HttpServletResponse response,String id) throws IOException {
+        System.out.println("test");
         String path = id;
         response.setContentType("text/html; charset = UTF-8");
         FileItem fileItem = fileService.loadFileItemByPath(path);
