@@ -20,7 +20,7 @@ public interface empDAO {
 
 
     @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
-            ") values (#{emp_id},#{name},#{password},#{salt},#{role_id},#{org_id})"})
+            ") values (#{empId},#{name},#{password},#{salt},#{roleId},#{orgId})"})
     int addUser(Employee emp);
 
     @Select({"select * from ", TABLE_NAME })

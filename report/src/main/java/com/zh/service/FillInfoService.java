@@ -22,7 +22,12 @@ public class FillInfoService {
      */
     public int addFileInfo(List<FillInfo> fillInfoList){
         for(int i=0;i<fillInfoList.size();i++){
-            fillInfoDAO.addFileInfo(fillInfoList.get(i));
+            if(existColIdAndEmpId(fillInfoList.get(i).getColId(),fillInfoList.get(i).getEmpID())){
+                fillInfoDAO.updataFillInfo(fillInfoList.get(i));
+            }
+            else{
+                fillInfoDAO.addFileInfo(fillInfoList.get(i));
+            }
         }
         return 1;
     }

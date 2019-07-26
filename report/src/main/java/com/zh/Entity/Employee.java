@@ -4,20 +4,21 @@ package com.zh.Entity;
  * Created by lqp on 2019/7/22
  */
 public class Employee {
-    private String emp_id;
+    private String empId;
     private String name;
-    private int org_id;
-    private int role_id;
+    private int orgID;
+    private int roleID;
     private String password;
     private String salt;
-    private int del_flag;
+    private int delFlag;
 
-    public String getEmp_id() {
-        return emp_id;
+
+    public String getEmpId() {
+        return empId;
     }
 
-    public void setEmp_id(String emp_id) {
-        this.emp_id = emp_id;
+    public void setEmpId(String empId) {
+        this.empId = empId;
     }
 
     public String getName() {
@@ -28,20 +29,20 @@ public class Employee {
         this.name = name;
     }
 
-    public int getOrd_id() {
-        return org_id;
+    public int getOrgID() {
+        return orgID;
     }
 
-    public void setOrd_id(int ord_id) {
-        this.org_id = ord_id;
+    public void setOrgID(int orgID) {
+        this.orgID = orgID;
     }
 
-    public int getRole_id() {
-        return role_id;
+    public int getRoleID() {
+        return roleID;
     }
 
-    public void setRole_id(int role_id) {
-        this.role_id = role_id;
+    public void setRoleID(int roleID) {
+        this.roleID = roleID;
     }
 
     public String getPassword() {
@@ -60,11 +61,11 @@ public class Employee {
         this.salt = salt;
     }
 
-    public int getDel_flag() {
-        return del_flag;
+    public int getDelFlag() {
+        return delFlag;
     }
 
-    public void setDel_flag(int del_flag) {
-        this.del_flag = del_flag;
+    public void setDelFlag(int delFlag) {
+        this.delFlag = delFlag;
     }
 }

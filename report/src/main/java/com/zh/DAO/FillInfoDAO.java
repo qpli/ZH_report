@@ -31,6 +31,19 @@ public interface FillInfoDAO {
     //@Options(keyProperty="fill_id",keyColumn="fillId",useGeneratedKeys=true)
     int addFileInfo(FillInfo fillInfo);
 
+    /**
+     *
+     * @param fillInfo
+     * @return
+     */
+    @Update({"update ",TABLE_NAME," set context = #{context} , fillDatetime = #{fillDatetime} where col_id = #{colId} and emp_id = #{empID} "})
+    int updataFillInfo(FillInfo fillInfo);
+    /**
+     * 判断该列是否已经存在
+     * @param col_id
+     * @param emp_id
+     * @return
+     */
     @Select({"select col_id, emp_id from "+TABLE_NAME+" where col_id = #{col_id} and emp_id = #{emp_id}"})
     List<FillInfo> existColIdAndEmpId(Integer col_id,String emp_id);
 

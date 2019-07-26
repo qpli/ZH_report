@@ -3,7 +3,7 @@ package com.zh.service;
 import com.zh.DAO.LoginTicketDao;
 import com.zh.DAO.empDAO;
 import com.zh.Entity.Employee;
-import com.zh.Entity.Login_ticket;
+import com.zh.Entity.LoginTicket;
 import com.zh.util.ReportUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,10 +65,10 @@ public class Emp_service {
         //密码强度
         emp = new Employee();
         emp.setName(empName);
-        emp.setEmp_id(empId);
+        emp.setEmpId(empId);
 //        emp.setDel_flag(0);
-        emp.setOrd_id(1);
-        emp.setRole_id(1);
+        emp.setOrgID(1);
+        emp.setRoleID(1);
         emp.setSalt(UUID.randomUUID().toString().substring(0, 5));
         emp.setPassword(ReportUtil.MD5(password + emp.getSalt()));
         System.out.println("添加用户成功11111");
@@ -76,14 +76,14 @@ public class Emp_service {
 
         System.out.println("添加用户成功");
         //传入ticket，也就是登录成功
-        String ticket = addLoginTicket(emp.getEmp_id());
+        String ticket = addLoginTicket(emp.getEmpId());
         map.put("ticket", ticket);
         return map;
     }
 
     private String addLoginTicket(String emp_id) {
-        Login_ticket ticket = new Login_ticket();
-        ticket.setEmp_id(emp_id);
+        LoginTicket ticket = new LoginTicket();
+        ticket.setEmpId(emp_id);
         Date date = new Date();
         date.setTime(date.getTime() + 1000*3600*24);
         ticket.setExpired(date);
@@ -120,7 +120,7 @@ public class Emp_service {
 
 
         //传入ticket，也就是登录成功
-        System.out.println("emp.getEmp_id():  "+emp.getEmp_id()+"name: "+emp.getName());
+        System.out.println("emp.getEmp_id():  "+emp.getEmpId()+"name: "+emp.getName());
         String ticket = addLoginTicket(emp_id);
 
         System.out.println("登陆时已添加ticket");

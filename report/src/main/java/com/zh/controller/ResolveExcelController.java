@@ -72,6 +72,7 @@ public class ResolveExcelController {
         ModelAndView view = new ModelAndView(new MappingJackson2JsonView());
 //        ModelAndView view = new ModelAndView( );
 
+        logger.info("当前用户为："+hostHolder.getUser().getEmpId());
         String filename = file.getOriginalFilename();//获取文件名
         System.out.println("是不是一个excel文件？"+isExcelFileName(filename));
         if (!isExcelFileName(filename)) {
@@ -153,10 +154,10 @@ public class ResolveExcelController {
                 logger.info(JSON.toJSONString("该列全为空"));
                 continue;
             }
-            if(fillInfoService.existColIdAndEmpId(colInfoService.selectColIDByReportIdAndColLoc(reportID,i),"lisi")){
-                logger.info(JSON.toJSONString("该列已存在"));
-                continue;
-            }
+//            if(fillInfoService.existColIdAndEmpId(colInfoService.selectColIDByReportIdAndColLoc(reportID,i),"lisi")){
+//                logger.info(JSON.toJSONString("该列已存在"));
+//                continue;
+//            }
             else {
                 fillInfo.setContext(fillInfo_context.toString());
                 fillInfo.setColId(colInfoService.selectColIDByReportIdAndColLoc(reportID,i));  //如何获取列ID

@@ -4,49 +4,49 @@ package com.zh.Entity;
  * Created by lqp on 2019/7/22
  */
 public class Organization {
-    private int org_id;
-    private String org_name;
-    private int parent_id;
-    private int emp_id;
-    private int del_flag;
+    private int orgId;
+    private String orgName;
+    private int parentId;
+    private int empId;
+    private int delFlag;
 
-    public int getOrg_id() {
-        return org_id;
+    public int getOrgId() {
+        return orgId;
     }
 
-    public void setOrg_id(int org_id) {
-        this.org_id = org_id;
+    public void setOrgId(int orgId) {
+        this.orgId = orgId;
     }
 
-    public String getOrg_name() {
-        return org_name;
+    public String getOrgName() {
+        return orgName;
     }
 
-    public void setOrg_name(String org_name) {
-        this.org_name = org_name;
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 
-    public int getParent_id() {
-        return parent_id;
+    public int getParentId() {
+        return parentId;
     }
 
-    public void setParent_id(int parent_id) {
-        this.parent_id = parent_id;
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
-    public int getEmp_id() {
-        return emp_id;
+    public int getEmpId() {
+        return empId;
     }
 
-    public void setEmp_id(int emp_id) {
-        this.emp_id = emp_id;
+    public void setEmpId(int empId) {
+        this.empId = empId;
     }
 
-    public int getDel_flag() {
-        return del_flag;
+    public int getDelFlag() {
+        return delFlag;
     }
 
-    public void setDel_flag(int del_flag) {
-        this.del_flag = del_flag;
+    public void setDelFlag(int delFlag) {
+        this.delFlag = delFlag;
     }
 }
