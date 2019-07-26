@@ -1,10 +1,10 @@
 package com.zh.Entity.file;
 
 /**
- * @Author: lisq
- * @Date: 2019/7/26 15:47
- * @Description:
- */
+* @Author:         lisq
+* @CreateDate:     2019/7/26 20:04
+* @Description:    
+*/
 public class FileTag {
     String name;
     String value;

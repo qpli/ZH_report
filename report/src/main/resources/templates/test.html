@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>测试</title>
+    <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 </head>
 <body>
 <input name="reportId" id="id">
-<button value="导出" id="export"></button>
+<input type="button" value="导出" id="export"></input>
 <script>
     $('#export').click(function() {
-
-        var reportId = $("#id").val() == "";
+        var reportId = $("#id").val();
         $.ajax({
             type: "POST",
             url: "/excel/export",
             data: {"reportId":reportId},
             success: function(data) {
-                if (data.code == 0) {
-                    alert('操作成功');
-                    window.location.href = '/member/member';
+                console.log(data);
+                if (data.code == "200") {
+                    fileId=encodeURIComponent(data.data);
+                    console.log(fileId);
+                    window.location.href =   "/get.do?id="+fileId;
                 }
                 else {
                     $("#btn_login").attr("disabled", false);
