@@ -5,10 +5,10 @@ import java.util.Date;
 /**
  * Created by lqp on 2019/7/22
  */
-public class Login_ticket {
+public class LoginTicket {
 
     private int id;
-    private String emp_id;
+    private String empId;
     private String ticket;
     private Date expired;
     private int status;
@@ -21,12 +21,12 @@ public class Login_ticket {
         this.id = id;
     }
 
-    public String getEmp_id() {
-        return emp_id;
+    public String getEmpId() {
+        return empId;
     }
 
-    public void setEmp_id(String emp_id) {
-        this.emp_id = emp_id;
+    public void setEmpId(String empId) {
+        this.empId = empId;
     }
 
     public String getTicket() {

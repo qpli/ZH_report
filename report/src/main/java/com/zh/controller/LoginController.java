@@ -28,9 +28,13 @@ public class LoginController {
     @ResponseBody
     public ModelAndView loginIndex(){
         ModelAndView view = new ModelAndView("/login.html");
+        return view;
+    }
 
-        Employee emp = new Employee();
-        view.addObject("user",emp);
+    @GetMapping(path = {"/loginSuccess"})
+    @ResponseBody
+    public ModelAndView loginSuccessIndex(){
+        ModelAndView view = new ModelAndView("/C_offlineCreateTable.html");
         return view;
     }
 
@@ -50,9 +54,9 @@ public class LoginController {
                       @RequestParam(value="rember", defaultValue = "0") int rememberme){
         Employee emp = new Employee();
         emp.setName(username);
-        emp.setRole_id(1);
-        emp.setOrd_id(1);
-        emp.setEmp_id(empId);
+        emp.setRoleID(1);
+        emp.setOrgID(1);
+        emp.setEmpId(empId);
         emp.setSalt("sddfds");
         emp.setPassword(password);
         int res =  emp_service.addEmp(emp);
@@ -109,7 +113,7 @@ public class LoginController {
      */
     @RequestMapping(path = {"/login"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public String login(@RequestParam("username") String emp_id,
+    public String login(@RequestParam("emp_id") String emp_id,
                         @RequestParam("password") String password,
                         @RequestParam(value="rember", defaultValue = "0") int rememberme,
                         HttpServletResponse response) {

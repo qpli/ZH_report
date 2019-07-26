@@ -1,33 +1,21 @@
 package com.zh.controller;
 
 import com.zh.Entity.FillInfo;
-import com.zh.Entity.FinalReport;
 import com.zh.Entity.ReportInfo;
-import com.zh.Entity.file.FileItem;
 import com.zh.service.ColInfoService;
-import com.zh.service.FileService;
 import com.zh.service.FillInfoService;
 import com.zh.service.ReportService;
 import com.zh.util.JsonResult;
-import com.zh.util.PlatformException;
-import org.jxls.util.JxlsHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import javax.servlet.http.HttpServletResponse;
-import org.jxls.common.Context;
 
-
-import javax.swing.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.logging.SimpleFormatter;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: lisq
@@ -44,9 +32,9 @@ public class ReportController {
     ColInfoService colInfoService;
     @Autowired
     FillInfoService fillInfoService;
-
-    @Autowired
-    FileService fileService;
+//
+//    @Autowired
+//    FileService fileService;
 
     /**
      * 创建新报表
@@ -124,14 +112,19 @@ public class ReportController {
      * @param reportId
      * @return
      */
+
+
+
+    /**
+     * 1)需要用你自己编写一个的excel模板
+     * 2)通常excel导出需要关联更多数据，因此yxcsInfoService.queryByCondition方法经常不符合需求，需要重写一个为模板导出的查询
+     * 3)参考ConsoleDictController来实现模板导入导出
+     */
+    /*
     @PostMapping("/excel/export")
     @ResponseBody
     public JsonResult<String> export(HttpServletResponse response,Integer reportId) {
-        /**
-         * 1)需要用你自己编写一个的excel模板
-         * 2)通常excel导出需要关联更多数据，因此yxcsInfoService.queryByCondition方法经常不符合需求，需要重写一个为模板导出的查询
-         * 3)参考ConsoleDictController来实现模板导入导出
-         */
+
         String excelTemplate ="excelTemplates/dslx/yjsyInfo/报表_template.xlsx";
 
         //本次导出需要的数据
@@ -166,4 +159,5 @@ public class ReportController {
             throw new PlatformException(e.getMessage());
         }
     }
+    */
 }
