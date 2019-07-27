@@ -13,10 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * Created by lqp on 2019/7/25
@@ -88,10 +86,7 @@ public class FillInfoService {
      * 将审核通过的数据填充到final_report表中
      */
     public void fromFillToFinalReport(Integer reportId){
-        //查询该报表的业务主键信息
-        ReportInfo reportInfo = reportDAO.getReportInfo(reportId);
-        String bussKey = reportInfo.getBussKey();
-        String[] keys = bussKey.split(",");//用，分割
+        String[] keys = bussKeys(reportId);
         //查询该报表审核通过的列填写信息
         List<FillInfo> fillInfos = fillInfoDAO.getPassFillInfo(reportId);
         //按填写人分组
@@ -123,6 +118,18 @@ public class FillInfoService {
             }
 
         }
+    }
+
+    /**
+     * 查询指定报表的业务主键信息
+     * @param reportId
+     * @return
+     */
+    public String[] bussKeys(Integer reportId){
+        ReportInfo reportInfo = reportDAO.getReportInfo(reportId);
+        String bussKey = reportInfo.getBussKey();
+        String[] keys = bussKey.split(",");//用，分割
+        return  keys;
     }
 
     /**
@@ -203,6 +210,94 @@ public class FillInfoService {
         if (finReport[19] !=null) finalReport.setCol19(finReport[19]);
         if (finReport[20] !=null) finalReport.setCol20(finReport[20]);
         return finalReport;
+    }
+
+    /**
+     * 在线填写插入到final_report
+     * @param finalReport
+     */
+    public void onlineInsert(FinalReport finalReport,String empId){
+        String[] keys = bussKeys(finalReport.getReportId());
+        String[] fillInfo = objectToString(finalReport);
+        //判断业务主键在数据库中是否存在
+        String sqlClause = jointWhereClause(fillInfo,keys);
+        FinalReport fReport= finalReportDAO.getInfoByBussKey(sqlClause);
+        if (fReport == null){//若不存在，则插入
+            finalReport.setCreatTime(new Date());
+            finalReport.setCreatUser(empId);
+            finalReportDAO.insertRowFinalReport(finalReport);
+        }else {//否则更新
+            try {
+                finalReport = updateBean(fReport,finalReport);
+                finalReport.setUpdateUser(empId);
+                finalReport.setUpdateTime(new Date());
+                finalReportDAO.updateRowFinalReport(finalReport);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    /**
+     * 解决更新时，源对象被覆盖,利用反射
+     * @param src 数据库查出的源对象数据
+     * @param desc 前端传的需要更新的数据
+     * @return 更新后的对象
+     * @throws Exception 源对象与目标对象类型不一致
+     */
+    public static FinalReport updateBean(FinalReport src,FinalReport desc) throws Exception {
+        Class<?> srcClass = src.getClass();
+        Class<?> descClass = desc.getClass();
+        if(!descClass.equals(srcClass)){
+            throw new Exception("源对象与目标对象类型不一致！");
+        }
+        Method[] descClassDeclaredMethods = descClass.getDeclaredMethods();
+        Method[] srcClassDeclaredMethods = srcClass.getDeclaredMethods();
+        for(Method descMethod : descClassDeclaredMethods){
+            if (descMethod.getName().startsWith("get")){
+                Object invoke = descMethod.invoke(desc);
+                if ((invoke != null) && !"".equals(invoke.toString().trim())){
+                    String methodSetMethod = "set"+descMethod.getName().substring(3);
+                    for (Method srcMethod : srcClassDeclaredMethods){
+                        if (srcMethod.getName().equalsIgnoreCase(methodSetMethod)){
+                            srcMethod.invoke(src,invoke);
+                        }
+                    }
+                }
+            }
+        }
+        return src;
+    }
+
+    /**
+     * 将final_report对象的列信息转换为数组
+     * @param finReport
+     * @return
+     */
+    private String[] objectToString(FinalReport finReport){
+        String[] fillInfo = new String[21];
+        fillInfo[1] = finReport.getCol1();
+        fillInfo[2] = finReport.getCol2();
+        fillInfo[3] = finReport.getCol3();
+        fillInfo[4] = finReport.getCol4();
+        fillInfo[5] = finReport.getCol5();
+        fillInfo[6] = finReport.getCol6();
+        fillInfo[7] = finReport.getCol7();
+        fillInfo[8] = finReport.getCol8();
+        fillInfo[9] = finReport.getCol9();
+        fillInfo[10] = finReport.getCol10();
+        fillInfo[11] = finReport.getCol11();
+        fillInfo[12] = finReport.getCol12();
+        fillInfo[13] = finReport.getCol13();
+        fillInfo[14] = finReport.getCol14();
+        fillInfo[15] = finReport.getCol15();
+        fillInfo[16] = finReport.getCol16();
+        fillInfo[17] = finReport.getCol17();
+        fillInfo[18] = finReport.getCol18();
+        fillInfo[19] = finReport.getCol19();
+        fillInfo[20] = finReport.getCol20();
+        return fillInfo;
     }
 
 

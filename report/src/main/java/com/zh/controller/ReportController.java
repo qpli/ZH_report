@@ -107,12 +107,6 @@ public class ReportController {
         return JsonResult.success();
     }
 
-    @PostMapping("/test111")
-    @ResponseBody
-    public void test1(Integer reportId){
-        fillInfoService.fromFillToFinalReport(reportId);
-    }
-
     /**
      * 获取员工所在团队的所有报表
      * @return
@@ -125,6 +119,15 @@ public class ReportController {
         if (empId == null) empId = "admin";
         return reportService.getAllReportInTeam(empId);
     }
+
+    @PostMapping("/onlineFill")
+    @ResponseBody
+    public JsonResult onLineFill(FinalReport finalReport){
+        String empId = hostHolder.getUser().getEmpId();
+        fillInfoService.onlineInsert(finalReport,empId);
+        return  JsonResult.success();
+    }
+
 
     /**
      * 员工导出报表列信息

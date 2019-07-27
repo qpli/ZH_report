@@ -4,6 +4,7 @@ import com.zh.Entity.ColInfo;
 import com.zh.Entity.FinalReport;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +28,7 @@ public interface ColInfoDAO {
     int add(ColInfo colInfo);
 
     @Select({"select col_id from "+tableName+" where REPORT_ID = #{reportId} and col_loc = #{col_loc}" })
-    int selectColIDByReportIdAndColLoc(Integer reportId,Integer col_loc);
+    int selectColIDByReportIdAndColLoc(@Param("reportId") Integer reportId,@Param("col_loc") Integer col_loc);
 
     /**
      * 查询指定报表的列信息
@@ -36,6 +37,6 @@ public interface ColInfoDAO {
      */
     @Select({"SELECT col_name\n" +
             "  FROM ",tableName ," where REPORT_ID = #{reportId} order by col_loc"})
-    String[] queryExcel(Integer reportId);
+    String[] queryExcel(@Param("reportId") Integer reportId);
 
 }
