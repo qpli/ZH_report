@@ -26,7 +26,7 @@ public class ReportWebConfiguration extends WebMvcConfigurerAdapter {
         //首先要让前一个拦截器来判断用户的状态，然后根据用户状态执行后续的拦截器
 //        registry.addInterceptor(loginRequiredInterceptor).addPathPatterns("/*");
 //        registry.addInterceptor(loginRequiredInterceptor).excludePathPatterns("");
-        registry.addInterceptor(loginRequiredInterceptor).excludePathPatterns("/login","/");
+        registry.addInterceptor(loginRequiredInterceptor).addPathPatterns("/**").excludePathPatterns("/login","/","/json","/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg"," /**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg");
         super.addInterceptors(registry);
     }
 

@@ -67,7 +67,7 @@ public class ExcelUtil {
 
                 int rowNum = sheet.getLastRowNum();
                 logger.info("excel的行数：" +rowNum);
-                for(int i=1;i<rowNum;i++){
+                for(int i=1;i<rowNum+1;i++){
                     XSSFRow row = (XSSFRow) sheet.getRow(i);
                     List<String> list = new LinkedList<>();   //行内容
                     logger.info("第一行列数："+row0.getLastCellNum());
