@@ -67,4 +67,12 @@ public class FillInfoService {
         fillInfoDAO.updateStatus(fillId,status);
     }
 
+    /**
+     * 将审核通过的数据填充到final_report表中
+     */
+    public void fromFillToFinalReport(){
+
+    }
+
+
 }

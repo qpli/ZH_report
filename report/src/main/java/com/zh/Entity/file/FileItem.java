@@ -48,6 +48,5 @@ public abstract class FileItem {
     public void setId(Long id) {
         this.id = id;
     }
-	
-	
+    
 }

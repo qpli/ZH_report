@@ -1,9 +1,6 @@
 package com.zh.controller;
 
-import com.zh.Entity.Employee;
-import com.zh.Entity.FillInfo;
-import com.zh.Entity.FinalReport;
-import com.zh.Entity.ReportInfo;
+import com.zh.Entity.*;
 import com.zh.Entity.file.FileItem;
 import com.zh.service.ColInfoService;
 import com.zh.service.FileService;
@@ -47,6 +44,8 @@ public class ReportController {
     FillInfoService fillInfoService;
     @Autowired
     FileService fileService;
+    @Autowired
+    HostHolder hostHolder;
 
 
     /**
@@ -60,7 +59,7 @@ public class ReportController {
     public JsonResult createReport(ReportInfo reportInfo, String[] colNames){
 
         //获取当前用户
-        String empId = "lisi";
+        String empId = hostHolder.getUser().getEmpId();
         reportInfo.setEmpId(empId);
 
         //判断数据库中是否存在该报表
@@ -103,36 +102,37 @@ public class ReportController {
                 fillInfoService.update(ids[i],status[i]);
             }
         }
+        //审核完成后，需要将fill_info数据添加到final_report中
+        fillInfoService.fromFillToFinalReport();
         return JsonResult.success();
     }
 
     /**
      * 获取员工所在团队的所有报表
-     * @param empId
      * @return
      */
     @PostMapping("/allReport")
     @ResponseBody
-    public Map<String, List<ReportInfo>> allReport(String empId){
+    public Map<String, List<ReportInfo>> allReport(){
         //获取当前用户
+        String empId = hostHolder.getUser().getEmpId();
         if (empId == null) empId = "admin";
         return reportService.getAllReportInTeam(empId);
     }
 
     /**
      * 员工导出报表列信息
+     *
+     *    1)需要用你自己编写一个的excel模板
+     *    2)通常excel导出需要关联更多数据，因此yxcsInfoService.queryByCondition方法经常不符合需求，需要重写一个为模板导出的查询
+     *    3)参考ConsoleDictController来实现模板导入导出
+     *
      * @param reportId
      * @return
      */
     @PostMapping("/excel/export")
     @ResponseBody
     public JsonResult<String> export(Integer reportId) {
-        System.out.println(reportId);
-        /**
-         * 1)需要用你自己编写一个的excel模板
-         * 2)通常excel导出需要关联更多数据，因此yxcsInfoService.queryByCondition方法经常不符合需求，需要重写一个为模板导出的查询
-         * 3)参考ConsoleDictController来实现模板导入导出
-         */
         String excelTemplate ="excelTemplates/报表_template.xlsx";
 
         //本次导出需要的数据
