@@ -26,8 +26,7 @@ public interface FillInfoDAO {
      * @param fillInfo
      * @return
      */
-    @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
-            ") values (#{colId},#{empID},#{context},#{fillDatetime},#{status})"})
+    @Insert({"insert into ", TABLE_NAME, "( col_id, emp_id, context, fillDatetime ) values (#{colId},#{empID},#{context},#{fillDatetime})"})
     //@Options(keyProperty="fill_id",keyColumn="fillId",useGeneratedKeys=true)
     int addFileInfo(FillInfo fillInfo);
 

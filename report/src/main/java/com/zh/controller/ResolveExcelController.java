@@ -161,10 +161,10 @@ public class ResolveExcelController {
             else {
                 fillInfo.setContext(fillInfo_context.toString());
                 fillInfo.setColId(colInfoService.selectColIDByReportIdAndColLoc(reportID,i));  //如何获取列ID
-                fillInfo.setDelFlag(0);
-                fillInfo.setEmpID("lisi");  //如何获取用户名
+//                fillInfo.setDelFlag(0);
+                fillInfo.setEmpID(hostHolder.getUser().getEmpId());  //如何获取用户名
                 fillInfo.setFillDatetime(new Date());
-                fillInfo.setStatus(1);
+//                fillInfo.setStatus(1);
                 fillInfolist.add(fillInfo);
             }
         }
