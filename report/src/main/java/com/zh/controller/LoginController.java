@@ -54,8 +54,8 @@ public class LoginController {
                       @RequestParam(value="rember", defaultValue = "0") int rememberme){
         Employee emp = new Employee();
         emp.setName(username);
-        emp.setRoleID(1);
-        emp.setOrgID(1);
+        emp.setRoleId(1);
+        emp.setOrgId(1);
         emp.setEmpId(empId);
         emp.setSalt("sddfds");
         emp.setPassword(password);

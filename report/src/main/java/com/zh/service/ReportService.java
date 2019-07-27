@@ -88,7 +88,7 @@ public class ReportService {
      * @return
      */
     public String getReportName(Integer reportId){
-        return reportDAO.getReportName(reportId);
+        return reportDAO.getReportInfo(reportId).getReportName();
     }
 
 }

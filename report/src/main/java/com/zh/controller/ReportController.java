@@ -96,15 +96,21 @@ public class ReportController {
      */
     @PostMapping("/audit/submit")
     @ResponseBody
-    public JsonResult audit(int[] ids,int[] status){
+    public JsonResult audit(int[] ids,int[] status,Integer reportId){
         for(int i = 0 ; i<ids.length ; i++){
             if (status[i] != 0){
                 fillInfoService.update(ids[i],status[i]);
             }
         }
         //审核完成后，需要将fill_info数据添加到final_report中
-        fillInfoService.fromFillToFinalReport();
+        fillInfoService.fromFillToFinalReport(reportId);
         return JsonResult.success();
+    }
+
+    @PostMapping("/test111")
+    @ResponseBody
+    public void test1(Integer reportId){
+        fillInfoService.fromFillToFinalReport(reportId);
     }
 
     /**
@@ -148,9 +154,7 @@ public class ReportController {
             OutputStream os = item.openOutpuStream();
             Context context = new Context();
 
-            System.out.println("reportName:"+reportName);
-
-            context.putVar("reportName",reportName);
+//            context.putVar("reportName",reportName);
             int i = 0;
             //加入真实报表列信息
             for(;i<list.length;i++){

@@ -64,4 +64,13 @@ public interface FillInfoDAO {
      */
     @Update({"update ",TABLE_NAME," set status = #{sta} where fill_id = #{fillId}"})
     int updateStatus(@Param("fillId") Integer fillId, @Param("sta") Integer sta);
+
+    /**
+     * 查询特定报表中所有审核通过的列填写信息
+     * @return
+     */
+    @Select({"SELECT fill.col_ID,fill.EMP_ID,fill.context,fill.fillDatetime,col.REPORT_ID,col.col_loc,fill.status\n" +
+            "  FROM fill_info fill,col_info col \n" +
+            "  where col.REPORT_ID = #{reportId} and col.col_ID = fill.col_ID  and fill.status = 1"})
+    List<FillInfo> getPassFillInfo(Integer reportId);
 }

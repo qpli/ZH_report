@@ -18,6 +18,8 @@ public class FillInfo {
     Date fillDatetime;
     Integer status;
     Integer delFlag;
+    Integer reportId;
+    Integer colLoc;
 
     public Integer getFillId() {
         return fillId;
@@ -89,5 +91,21 @@ public class FillInfo {
 
     public void setName(String name) {
         name = name;
+    }
+
+    public Integer getReportId() {
+        return reportId;
+    }
+
+    public void setReportId(Integer reportId) {
+        this.reportId = reportId;
+    }
+
+    public Integer getColLoc() {
+        return colLoc;
+    }
+
+    public void setColLoc(Integer colLoc) {
+        this.colLoc = colLoc;
     }
 }

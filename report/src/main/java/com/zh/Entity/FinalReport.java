@@ -1,5 +1,7 @@
 package com.zh.Entity;
 
+import java.util.Date;
+
 /**
  * @Author: lisq
  * @Date: 2019/7/25 14:41
@@ -29,6 +31,10 @@ public class FinalReport {
     String col18;
     String col19;
     String col20;
+    Date creatTime;
+    String creatUser;
+    Date updateTime;
+    String updateUser;
 
     public Integer getFinalId() {
         return finalId;
@@ -212,5 +218,37 @@ public class FinalReport {
 
     public void setCol20(String col20) {
         this.col20 = col20;
+    }
+
+    public Date getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Date creatTime) {
+        this.creatTime = creatTime;
+    }
+
+    public String getCreatUser() {
+        return creatUser;
+    }
+
+    public void setCreatUser(String creatUser) {
+        this.creatUser = creatUser;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
     }
 }

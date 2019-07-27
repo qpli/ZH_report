@@ -67,8 +67,8 @@ public class Emp_service {
         emp.setName(empName);
         emp.setEmpId(empId);
 //        emp.setDel_flag(0);
-        emp.setOrgID(1);
-        emp.setRoleID(1);
+        emp.setOrgId(1);
+        emp.setRoleId(1);
         emp.setSalt(UUID.randomUUID().toString().substring(0, 5));
         emp.setPassword(ReportUtil.MD5(password + emp.getSalt()));
         System.out.println("添加用户成功11111");

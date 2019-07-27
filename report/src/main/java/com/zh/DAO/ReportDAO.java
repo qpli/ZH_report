@@ -60,7 +60,8 @@ public interface ReportDAO {
      * @param reportId
      * @return
      */
-    @Select({"select REPORT_NAME\n" +
+    @Select({"select * \n" +
             "  FROM ",tableName," where REPORT_ID = #{reportId}"})
-    String getReportName(Integer reportId);
+    ReportInfo getReportInfo(Integer reportId);
+
 }

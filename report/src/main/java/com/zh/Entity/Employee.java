@@ -6,8 +6,8 @@ package com.zh.Entity;
 public class Employee {
     private String empId;
     private String name;
-    private int orgID;
-    private int roleID;
+    private int orgId;
+    private int roleId;
     private String password;
     private String salt;
     private int delFlag;
@@ -29,20 +29,20 @@ public class Employee {
         this.name = name;
     }
 
-    public int getOrgID() {
-        return orgID;
+    public int getOrgId() {
+        return orgId;
     }
 
-    public void setOrgID(int orgID) {
-        this.orgID = orgID;
+    public void setOrgId(int orgId) {
+        this.orgId = orgId;
     }
 
-    public int getRoleID() {
-        return roleID;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
     public String getPassword() {
