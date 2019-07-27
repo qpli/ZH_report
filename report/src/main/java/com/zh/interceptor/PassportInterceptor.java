@@ -95,9 +95,9 @@ public class PassportInterceptor implements HandlerInterceptor {
                 else {
 
                     Employee user = userDAO.selectByEmpId(emp_id);
-                    logger.info("进入拦截器，通过EMP获取的用户为："+user);
+                    logger.info("进入拦截器，将当前用户加入hostHolder通过EMP获取的用户为："+JSON.toJSONString(user));
                     hostHolder.setUsers(user);
-                    logger.info("进入拦截器，通过hostHolder获取的用户为："+hostHolder.getUser());
+//                    logger.info("进入拦截器，通过hostHolder获取的用户为："+hostHolder.getUser());
                     return true;
                     //不能直接放在request里，因为是全局的一个ticket，其他服务想要读取时可能不会用到httprequest请求，
                     // 但是可以注入hostholder来获取用户信息。
