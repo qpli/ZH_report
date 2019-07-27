@@ -45,7 +45,7 @@ public interface FillInfoDAO {
      * @return
      */
     @Select({"select col_id, emp_id from "+TABLE_NAME+" where col_id = #{col_id} and emp_id = #{emp_id}"})
-    List<FillInfo> existColIdAndEmpId(Integer col_id,String emp_id);
+    List<FillInfo> existColIdAndEmpId(@Param("col_id") Integer colId,@Param("emp_id") String emp_id);
 
     /**
      * 团队长审核页面的展示结果

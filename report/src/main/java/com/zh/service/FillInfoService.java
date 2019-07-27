@@ -21,11 +21,15 @@ public class FillInfoService {
      * @return
      */
     public int addFileInfo(List<FillInfo> fillInfoList){
+        System.out.println("进入addfill函数中");
         for(int i=0;i<fillInfoList.size();i++){
+            System.out.println("进入addfill函数循环体中");
             if(existColIdAndEmpId(fillInfoList.get(i).getColId(),fillInfoList.get(i).getEmpID())){
+                System.out.println("updateFillInfo表");
                 fillInfoDAO.updataFillInfo(fillInfoList.get(i));
             }
             else{
+                System.out.println("addFillInfo表");
                 fillInfoDAO.addFileInfo(fillInfoList.get(i));
             }
         }
@@ -40,7 +44,7 @@ public class FillInfoService {
      */
     public boolean existColIdAndEmpId(Integer col_id,String emp_id){
         List<FillInfo> list = fillInfoDAO.existColIdAndEmpId(col_id,emp_id);
-        if(list==null)
+        if(list==null||list.size()==0)
             return false;
         else
             return true;
