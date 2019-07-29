@@ -82,6 +82,19 @@ public class ReportService {
         }
     }
 
+    public List<ReportInfo> mapToList( Map<String, List<ReportInfo>> map){
+        List<ReportInfo> list = new ArrayList<>();
+        for (Map.Entry<String, List<ReportInfo>> entry : map.entrySet()) {
+            List<ReportInfo> listValue = entry.getValue();
+            String key = entry.getKey();
+            for (int i = 0;i<listValue.size();i++){
+                listValue.get(i).setReportName(listValue.get(i).getReportName()+"-"+key);
+                list.add(listValue.get(i));
+            }
+        }
+        return list;
+    }
+
     /**
      * 根据报表名称获取报表名字
      * @param reportId

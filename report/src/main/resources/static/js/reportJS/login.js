@@ -26,7 +26,7 @@ $(function() {
             success: function(data) {
                 if (data.code == '0') {
                     console.log("进入成功")
-                    window.location.href = '/loginSuccess';
+                    window.location.href = '/createIndex';
                 } 
                 else {
                     $("#btn_login").attr("disabled", false);

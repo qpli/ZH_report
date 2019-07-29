@@ -1,5 +1,6 @@
 package com.zh.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.zh.Entity.*;
 import com.zh.Entity.file.FileItem;
 import com.zh.service.ColInfoService;
@@ -8,15 +9,14 @@ import com.zh.service.FillInfoService;
 import com.zh.service.ReportService;
 import com.zh.util.JsonResult;
 import com.zh.util.PlatformException;
+import org.apache.ibatis.annotations.Param;
 import org.jxls.util.JxlsHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletResponse;
 import org.jxls.common.Context;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,6 +33,7 @@ import java.util.*;
  * @Description:
  */
 @Controller
+@CrossOrigin
 public class ReportController {
     private static final Logger logger = LoggerFactory.getLogger(ReportController.class);
 
@@ -47,21 +48,38 @@ public class ReportController {
     @Autowired
     HostHolder hostHolder;
 
+    @GetMapping(path = {"/createIndex"})
+    @ResponseBody
+    public ModelAndView creatIndex(){
+        ModelAndView view = new ModelAndView("/reportCreate.html");
+        return view;
+    }
 
     /**
      * 创建新报表
-     * @param reportInfo
+     * @param reportName
      * @param colNames
+     * @param bussKeys
      * @return
      */
     @PostMapping("/create")
     @ResponseBody
-    public JsonResult createReport(ReportInfo reportInfo, String[] colNames){
-
+    public JsonResult createReport(String reportName,
+                                   @RequestParam(value = "colNames[]") String[] colNames,
+                                   @RequestParam(value = "bussKeys[]") boolean[] bussKeys){
+        ReportInfo reportInfo  = new ReportInfo();
+        reportInfo.setReportName(reportName);
         //获取当前用户
         String empId = hostHolder.getUser().getEmpId();
         reportInfo.setEmpId(empId);
-
+        String bussKey = "";
+        for(int i = 1;i<bussKeys.length;i++){
+            if(bussKeys[i-1]==true){
+                bussKey = bussKey+i+",";
+            }
+        }
+        if (bussKey.equals("")) return JsonResult.failMessage("报表模板没有业务主键");
+        reportInfo.setBussKey(bussKey);
         //判断数据库中是否存在该报表
         boolean isExit = reportService.isExitByName(reportInfo.getReportName());
         if (!isExit){//若不存在，则添加
@@ -113,11 +131,23 @@ public class ReportController {
      */
     @PostMapping("/allReport")
     @ResponseBody
-    public Map<String, List<ReportInfo>> allReport(){
+    public List<ReportInfo> allReport(){
         //获取当前用户
         String empId = hostHolder.getUser().getEmpId();
         if (empId == null) empId = "admin";
-        return reportService.getAllReportInTeam(empId);
+//        logger.info("当前用户: "+hostHolder.getUser());
+        Map<String, List<ReportInfo>> map = reportService.getAllReportInTeam(empId);
+        if (!empId .equals("admin")){
+            logger.info("当前用户为admin: "+empId);
+            List<ReportInfo> list = new ArrayList<>();
+            for (List<ReportInfo> temp:map.values()) {
+               list =temp ;
+            }
+            return  list;
+        }else {
+            logger.info("当前用户: "+empId);
+            return reportService.mapToList(map);
+        }
     }
 
     @PostMapping("/onlineFill")
