@@ -116,6 +116,46 @@ public class ResolveExcelController {
 
 
 
+    @RequestMapping(value = "/uploadExcelTemplate",method = {RequestMethod.POST})
+    public ModelAndView uploadExcel(HttpServletRequest request,
+                                    @RequestParam("file") MultipartFile file) {
+        ModelAndView view = new ModelAndView(new MappingJackson2JsonView());
+//        ModelAndView view = new ModelAndView( );
+
+        logger.info("当前用户为："+hostHolder.getUser().getEmpId());
+        String filename = file.getOriginalFilename();//获取文件名
+
+        String templateReportName = filename.substring(0,filename.lastIndexOf("."));
+        if (!isExcelFileName(filename)) {
+            return view.addObject("upload", "请上传后缀名是xls、xlsx的excel文件");
+        }
+        try {
+            String uploadDir = request.getSession().getServletContext().getRealPath("/") + "upload/";
+            System.out.println("进入excel文件上传");
+            File dir = new File(uploadDir);
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            File uploadFile = new File(uploadDir + UUID.randomUUID() + file.getOriginalFilename());
+            //先保存到本地
+            file.transferTo(uploadFile);
+            //解析，返回结果
+            List<String > contenOfRow = resolveExcelService.resolveExcelTemplate(uploadFile.getAbsolutePath());
+            logger.info(JSON.toJSONString(contenOfRow));
+            logger.info("报表名为： "+filename+"  表头信息为： "+JSON.toJSONString(contenOfRow));
+            view.addObject(templateReportName);
+            view.addObject(contenOfRow);
+            return  view;
+        } catch (Exception e) {
+            System.out.println("上传excel出现异常");
+            e.printStackTrace();
+            return view.addObject("upload", e.getMessage());
+        }
+    }
+
+
+
+
 
     /**
      * 判断Excel文件后缀名是否正确

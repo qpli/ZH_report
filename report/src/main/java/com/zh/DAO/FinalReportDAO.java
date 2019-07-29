@@ -54,4 +54,7 @@ public interface FinalReportDAO {
     @Select({" select * from ",TABLE_NAME," where ${jointWhereClause}"})
     FinalReport getInfoByBussKey(String jointWhereClause);
 
+
+    @Select({" select * from ",TABLE_NAME," where report_id = #{report_id}"})
+    FinalReport getInfoByReportId(Integer report_id);
 }

@@ -23,7 +23,7 @@ public class ExcelUtil {
 
     private static Logger logger = LoggerFactory.getLogger(ExcelUtil.class);
     /**
-     * 解析Excel表格
+     * 解析Excel表格,上传填写后的报表
      *
      * @param path 文件路径
      * @return
@@ -107,6 +107,56 @@ public class ExcelUtil {
 
         return excelSet;
     }
+
+
+    /**
+     * 解析Excel表格,上传填写后的报表
+     *
+     * @param path 文件路径
+     * @return
+     * @throws Exception
+     */
+    public static List<String> resolveExcelTemplate(String path) throws Exception {
+
+        ExcelSet excelSet = new ExcelSet();
+
+        List<String> contentsOfRow = new ArrayList<String>();
+        //Excel文件
+        Workbook workbook = WorkbookFactory.create(new File(path));
+
+        try {
+            List<ExcelSheet> sheets = new ArrayList<ExcelSheet>();
+            Iterator<Sheet> its = workbook.sheetIterator();
+            //处理每个sheet
+            while (its.hasNext()) {
+                Sheet sheet = its.next();
+                ExcelSheet excelSheet = new ExcelSheet();
+                excelSheet.setName(sheet.getSheetName());
+                //  Iterator<Row> itr = sheet.rowIterator();
+                //处理该sheet下每一行
+                int numRow = sheet.getLastRowNum();
+                Row row0 =  sheet.getRow(0);  //Excel表头
+
+                Iterator<Cell> itc = row0.cellIterator();
+                //处理该行每个cell
+                while (itc.hasNext()) {
+                    Cell cell = itc.next();
+//                        添加这一行解决数值类型单元格无法正确读取问题
+                    cell.setCellType(CellType.STRING);
+                    contentsOfRow.add(cell.toString());
+                }
+                return contentsOfRow;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("文件解析错误: " + e.getMessage(), e);
+        } finally {
+            workbook.close();
+        }
+        return contentsOfRow;
+    }
+
+
     /**
      * 解析Excel表格
      *

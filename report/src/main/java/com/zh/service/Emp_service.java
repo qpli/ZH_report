@@ -4,6 +4,7 @@ import com.zh.DAO.LoginTicketDao;
 import com.zh.DAO.empDAO;
 import com.zh.Entity.Employee;
 import com.zh.Entity.LoginTicket;
+import com.zh.Entity.Organization;
 import com.zh.util.ReportUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class Emp_service {
     private empDAO empdao;
 
     @Autowired
+    private OrgService orgService;
+    @Autowired
     private LoginTicketDao loginTicketDao;
 
     public Employee findAllEmp(){
@@ -40,14 +43,26 @@ public class Emp_service {
     }
 
 
-    public Map<String, Object> register(String empId, String password,String empName) {
+    public Map<String, Object> register(String empId, String password,String empName,String orgName,Integer role_Id,Integer flag) {
         Map<String, Object> map = new HashMap<>();
         if (StringUtils.isBlank(empId)) {
+            map.put("msgId", "用户ID不能为空");
+            return map;
+        }
+        if (StringUtils.isBlank(empName)) {
             map.put("msgusename", "用户名不能为空");
             return map;
         }
         if (StringUtils.isBlank(password)) {
             map.put("msgpwd", "密码不能为空");
+            return map;
+        }
+        if (StringUtils.isBlank(orgName)) {
+            map.put("magorg", "所属团队不能为空");
+            return map;
+        }
+        if (role_Id==null) {
+            map.put("magrole", "角色名不能为空");
             return map;
         }
         Employee emp = empdao.selectByEmpId(empId);
@@ -67,12 +82,48 @@ public class Emp_service {
         emp.setName(empName);
         emp.setEmpId(empId);
 //        emp.setDel_flag(0);
-        emp.setOrgId(1);
-        emp.setRoleId(1);
+
+        emp.setRoleId(role_Id);
         emp.setSalt(UUID.randomUUID().toString().substring(0, 5));
         emp.setPassword(ReportUtil.MD5(password + emp.getSalt()));
-        System.out.println("添加用户成功11111");
-        empdao.addUser(emp);
+
+        if(emp.getRoleId()==0){
+            System.out.println("注册普通员工成功11111");
+
+            if(orgService.selectByOrgName(orgName)==null||orgService.selectByOrgName(orgName).equals(null)){
+                map.put("msgorg", "普通用户注册，所属团队不存在");
+                return map;
+            }
+            else {
+                emp.setOrgId(orgService.selectByOrgName(orgName).getOrgId());
+                empdao.addUser(emp);
+            }
+        }
+        //如果角色为团队长
+        if(emp.getRoleId()==1){
+            if(orgService.selectByOrgName(orgName)==null||orgService.selectByOrgName(orgName).equals(null)){
+                //团队长填的团队名不存在，则需要插入该团队至团队表
+                Organization organization = new Organization();
+                organization.setEmpId(empId);
+                organization.setOrgName(orgName);
+                orgService.addOrg(organization);
+
+                emp.setOrgId(orgService.selectByOrgName(orgName).getOrgId());
+                empdao.addUser(emp);
+            }
+
+            else {
+                if(flag==0){
+                    map.put("msgorg", "该团队已经有团队长，不能重复覆盖");
+                    return map;
+                }
+                else {
+                    orgService.updateOrg(empId,orgName);
+                    emp.setOrgId(orgService.selectByOrgName(orgName).getOrgId());
+                    empdao.addUser(emp);
+                }
+            }
+        }
 
         System.out.println("添加用户成功");
         //传入ticket，也就是登录成功

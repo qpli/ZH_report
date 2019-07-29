@@ -8,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by lqp on 2019/7/24
  */
@@ -29,5 +32,19 @@ public class ResolveExcelServiceImpl implements ResolveExcelService {
         }
         logger.info("解析excel文件结束: {}", path);
         return excelSet;
+    }
+
+    public List<String> resolveExcelTemplate(String path) {
+        logger.info("开始解析excel文件: {}", path);
+
+        List<String> contenOfRow = new LinkedList<>();
+        try {
+            contenOfRow = ExcelUtil.resolveExcelTemplate(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CommonException("文件解析错误: " + e.getMessage(), e);
+        }
+        logger.info("解析excel文件结束: {}", path);
+        return contenOfRow;
     }
 }

@@ -7,7 +7,7 @@ public class Organization {
     private int orgId;
     private String orgName;
     private int parentId;
-    private int empId;
+    private String  empId;
     private int delFlag;
 
     public int getOrgId() {
@@ -34,11 +34,11 @@ public class Organization {
         this.parentId = parentId;
     }
 
-    public int getEmpId() {
+    public String getEmpId() {
         return empId;
     }
 
-    public void setEmpId(int empId) {
+    public void setEmpId(String empId) {
         this.empId = empId;
     }
 

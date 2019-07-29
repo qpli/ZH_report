@@ -76,14 +76,16 @@ public class LoginController {
      */
     @RequestMapping(path = {"/reg"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public String reg(@RequestParam("username") String username,
+    public String reg(@RequestParam("empName") String username,
                       @RequestParam("password") String password,
                       @RequestParam("empId") String empId,
+                      @RequestParam("orgName") String orgName,
+                      @RequestParam("roleId") Integer orgId,
+                      @RequestParam("updateOrgEmpFlag") Integer flag,
                       @RequestParam(value="rember", defaultValue = "0") int rememberme,
                       HttpServletResponse response) {
         try {
-            Map<String, Object> map = emp_service.register(username, password,empId);
-
+            Map<String, Object> map = emp_service.register(empId, password,username,orgName,orgId,flag);
             if (map.containsKey("ticket")) {
                 Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
                 cookie.setPath("/");

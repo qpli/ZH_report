@@ -7,7 +7,6 @@ import com.zh.DAO.ReportDAO;
 import com.zh.Entity.FillInfo;
 import com.zh.Entity.FinalReport;
 import com.zh.Entity.ReportInfo;
-import com.zh.controller.LoginController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +115,6 @@ public class FillInfoService {
                     finalReportDAO.updateRowFinalReport(finReport);
                 }
             }
-
         }
     }
 
