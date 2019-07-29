@@ -1,7 +1,7 @@
 <!--@Author 卞秦豫-->
 <!--_meta 作为公共模版分离出去-->
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<meta name="renderer" content="webkit|ie-comp|ie-stand">
@@ -41,7 +41,7 @@
 		<style>
 			#changesize{
 				font-size:xx-large;
-			};
+			}
 		</style>
 		<script>
 			$(document).ready(function() {
@@ -69,7 +69,7 @@
 						<ul class="cl">
 							<li>团队长</li>
 							<li class="dropDown dropDown_hover">
-								<a href="#" class="dropDown_A">admin <i class="Hui-iconfont">&#xe6d5;</i></a>
+								<a href="#" class="dropDown_A" ><span th:text="${user.name}"></span><i class="Hui-iconfont">&#xe6d5;</i></a>
 								<ul class="dropDown-menu menu radius box-shadow">
 									<li>
 										<a href="javascript:;" onClick="myselfinfo()">个人信息</a>
@@ -257,7 +257,7 @@
                         <table class="table table-border table-bordered table-bg table-hover" name="tbl" id="tbl">       
                                 <thead>
 									<tr class="text-c">
-										<th width="200"><input type="checkbox" name="ifAll"  onclick="checkAll()"></th>
+										<th width="200"><input type="checkbox" name="ifAll"></th>
 										<th>列属性名</th>
 										<th width="200">是否为业务主键</th>
 										<th width="200">操作</th>	
@@ -293,9 +293,7 @@
         <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 
 
-		<script type="text/javascript">
-		 var arrTds = new Array();
-		 var groupTypeId = new Array();    
+		<script type="text/javascript"> 
 		
 		// var arrTds
 		 var col_name;
@@ -344,7 +342,9 @@
 
 $(function() {
 	$('#FaBu_id').click(function(){
-		 //此处可做表单验证
+        var arrTds = new Array();
+        var groupTypeId = new Array();
+        //此处可做表单验证
 		 if ($("#reportNameId").val() == "") {
             alert("报表名不能为空");
             return false;
@@ -396,6 +396,7 @@ $(function() {
                     alert('报表创建成功');
                     window.location.href = '/createIndex';
                 }else {
+
                     alert(data.msg)
 				}
             },
@@ -453,16 +454,6 @@ function deleteItem(){
       $(item[i]).parents(".text-c").remove();
   }
 }
-
-// /*资讯-发布*/
-// function FaBu_tpl(){
-// 	layer.confirm('确认发布吗？',function(index){
-// 		//$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
-// 		//$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-// 		//$(obj).remove();
-// 		layer.msg('已发布!',{icon: 6,time:1000});//icon:图标
-// 	});
-// }
 
 		function remove(){
            alert("删除此列");

@@ -96,10 +96,11 @@ public class ResolveExcelController {
 
             logger.info(JSON.toJSONString(excelSet));
 
+            //将excel转为List<FillInfo>
             List<FillInfo> fillInfolist = excelToFillInfo(excelSet,reportId);
             logger.info("fillInfoList是否为空？"+fillInfolist.isEmpty());
             if(!fillInfolist.isEmpty()) {
-                fillInfoService.addFileInfo(fillInfolist);
+                fillInfoService.addFileInfo(fillInfolist,reportId);
                 return view.addObject("upload", excelSet);
             }
             else{
@@ -204,6 +205,8 @@ public class ResolveExcelController {
 //                fillInfo.setDelFlag(0);
                 fillInfo.setEmpID(hostHolder.getUser().getEmpId());  //如何获取用户名
                 fillInfo.setFillDatetime(new Date());
+                fillInfo.setColLoc(i+1);
+                fillInfo.setReportId(reportID);
 //                fillInfo.setStatus(1);
                 fillInfolist.add(fillInfo);
             }

@@ -15,6 +15,7 @@ public class ReportInfo {
     String bussKey;
     Integer delFlag;
     String orgName;
+    Integer isCheck;
 
     public Integer getReportId() {
         return reportId;
@@ -70,5 +71,13 @@ public class ReportInfo {
 
     public void setOrgName(String orgName) {
         this.orgName = orgName;
+    }
+
+    public Integer getIsCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(Integer isCheck) {
+        this.isCheck = isCheck;
     }
 }

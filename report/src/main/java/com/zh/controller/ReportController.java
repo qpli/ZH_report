@@ -1,5 +1,6 @@
 package com.zh.controller;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.alibaba.fastjson.JSON;
 import com.zh.Entity.*;
 import com.zh.Entity.file.FileItem;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import org.jxls.common.Context;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,6 +54,18 @@ public class ReportController {
     @ResponseBody
     public ModelAndView creatIndex(){
         ModelAndView view = new ModelAndView("/reportCreate.html");
+        Employee user = hostHolder.getUser();
+        view.addObject("user",user);
+        return view;
+    }
+
+    @GetMapping(path = {"/preview"})
+    @ResponseBody
+    public ModelAndView preview(HttpServletResponse response){
+        ModelAndView view = new ModelAndView("/C_previewTable.html");
+        Employee user = hostHolder.getUser();
+        view.addObject("user",user);
+        view.addObject("reportLists",allReport());
         return view;
     }
 
@@ -66,12 +80,14 @@ public class ReportController {
     @ResponseBody
     public JsonResult createReport(String reportName,
                                    @RequestParam(value = "colNames[]") String[] colNames,
-                                   @RequestParam(value = "bussKeys[]") boolean[] bussKeys){
+                                   @RequestParam(value = "bussKeys[]") boolean[] bussKeys,
+                                   Integer isCheck){
         ReportInfo reportInfo  = new ReportInfo();
         reportInfo.setReportName(reportName);
         //获取当前用户
         String empId = hostHolder.getUser().getEmpId();
         reportInfo.setEmpId(empId);
+        reportInfo.setIsCheck(isCheck);
         String bussKey = "";
         for(int i = 1;i<bussKeys.length;i++){
             if(bussKeys[i-1]==true){
@@ -227,6 +243,16 @@ public class ReportController {
     @RequestMapping(path = {"/test"})
     @ResponseBody
     public ModelAndView loginIndex(){
+        ModelAndView view = new ModelAndView("/test.html");
+        view.addObject("test","名字");
+        return view;
+    }
+
+
+    @GetMapping(path = {"/previewTable"})
+    @ResponseBody
+    public ModelAndView test(Integer repoorId){
+        System.out.println("测试 :  "+repoorId);
         ModelAndView view = new ModelAndView("/test.html");
         return view;
     }

@@ -34,18 +34,21 @@ public class FillInfoService {
      * @param fillInfoList
      * @return
      */
-    public int addFileInfo(List<FillInfo> fillInfoList){
-        System.out.println("进入addfill函数中");
-        for(int i=0;i<fillInfoList.size();i++){
-            System.out.println("进入addfill函数循环体中");
-            if(existColIdAndEmpId(fillInfoList.get(i).getColId(),fillInfoList.get(i).getEmpID())){
-                System.out.println("updateFillInfo表");
-                fillInfoDAO.updataFillInfo(fillInfoList.get(i));
+    public int addFileInfo(List<FillInfo> fillInfoList, Integer reportId){
+
+        //查询该报表是否要审核
+        Integer isCheck = reportDAO.getReportInfo(reportId).getIsCheck();
+        if(isCheck == 1){//如果isCheck是1 表示要审核
+            for(int i=0;i<fillInfoList.size();i++){
+                if(existColIdAndEmpId(fillInfoList.get(i).getColId(),fillInfoList.get(i).getEmpID())){
+                    fillInfoDAO.updataFillInfo(fillInfoList.get(i));
+                }
+                else{
+                    fillInfoDAO.addFileInfo(fillInfoList.get(i));
+                }
             }
-            else{
-                System.out.println("addFillInfo表");
-                fillInfoDAO.addFileInfo(fillInfoList.get(i));
-            }
+        }else {//否则不审核，直接插入final_report表中
+            insertFinalReport(reportId,fillInfoList);
         }
         return 1;
     }
@@ -85,9 +88,18 @@ public class FillInfoService {
      * 将审核通过的数据填充到final_report表中
      */
     public void fromFillToFinalReport(Integer reportId){
-        String[] keys = bussKeys(reportId);
         //查询该报表审核通过的列填写信息
         List<FillInfo> fillInfos = fillInfoDAO.getPassFillInfo(reportId);
+        insertFinalReport(reportId,fillInfos);
+    }
+
+    /**
+     * 将FillInfo的lis对象插入到final_report表中
+     * @param reportId
+     * @param fillInfos
+     */
+    public void insertFinalReport(Integer reportId,List<FillInfo> fillInfos){
+        String[] keys = bussKeys(reportId);
         //按填写人分组
         Map<String, List<FillInfo>> map = groupByEmpId(fillInfos);
         for (List<FillInfo> list : map.values()) {
@@ -297,6 +309,4 @@ public class FillInfoService {
         fillInfo[20] = finReport.getCol20();
         return fillInfo;
     }
-
-
 }
