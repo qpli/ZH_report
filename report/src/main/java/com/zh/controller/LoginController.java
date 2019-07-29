@@ -81,7 +81,7 @@ public class LoginController {
                       @RequestParam("empId") String empId,
                       @RequestParam("orgName") String orgName,
                       @RequestParam("roleId") Integer orgId,
-                      @RequestParam("updateOrgEmpFlag",defaultValue = "0") Integer flag,
+                      @RequestParam(value = "updateOrgEmpFlag",defaultValue = "0") Integer flag,
                       @RequestParam(value="rember", defaultValue = "0") int rememberme,
                       HttpServletResponse response) {
         try {
