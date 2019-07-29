@@ -1,6 +1,5 @@
 package com.zh.DAO;
 
-import com.zh.Entity.FinalReport;
 import com.zh.Entity.ReportInfo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -63,5 +62,16 @@ public interface ReportDAO {
     @Select({"select * \n" +
             "  FROM ",tableName," where REPORT_ID = #{reportId}"})
     ReportInfo getReportInfo(Integer reportId);
+
+
+    /**
+     * 根据报表ID查创建该报表的人
+     * @param reportId
+     * @return
+     */
+    @Select({"select emp_id \n" +
+            "  FROM ",tableName," where REPORT_ID = #{reportId}"})
+    String getCreateEmp(Integer reportId);
+
 
 }

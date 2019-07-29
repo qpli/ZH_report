@@ -1,7 +1,6 @@
 package com.zh.service;
 
 import com.zh.DAO.ReportDAO;
-import com.zh.Entity.FinalReport;
 import com.zh.Entity.ReportInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,6 +101,15 @@ public class ReportService {
      */
     public String getReportName(Integer reportId){
         return reportDAO.getReportInfo(reportId).getReportName();
+    }
+
+    /**
+     * 根据报表ID查创建该报表的emp_id
+     * @param reportId
+     * @return
+     */
+    public String getCreateEmp(Integer reportId){
+        return reportDAO.getCreateEmp(reportId);
     }
 
 }

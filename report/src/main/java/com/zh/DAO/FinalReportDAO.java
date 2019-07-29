@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * Created by lqp on 2019/7/26
  */
@@ -56,5 +58,5 @@ public interface FinalReportDAO {
 
 
     @Select({" select * from ",TABLE_NAME," where report_id = #{report_id}"})
-    FinalReport getInfoByReportId(Integer report_id);
+    List<FinalReport> getInfoByReportId(Integer report_id);
 }

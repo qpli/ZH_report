@@ -27,5 +27,9 @@ public class OrgService {
         return orgDAO.updateOrg(empId,orgName);
     };
 
+    public Integer selectOrgIdByCreatEmp(String emp_id){
+        return orgDAO.selectOrgIdByCreatEmp(emp_id);
+    };
+
 
 }

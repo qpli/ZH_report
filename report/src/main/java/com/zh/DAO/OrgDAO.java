@@ -24,4 +24,7 @@ public interface OrgDAO {
     @Update({"update ",TABLE_NAME," set emp_id = #{empId} where org_name = #{orgName}"})
     int updateOrg(@Param("empId") String empId, @Param("orgName") String orgName);
 
+    @Select({"select org_id from ", TABLE_NAME, " where emp_id=#{emp_id}"})
+    Integer selectOrgIdByCreatEmp(String emp_id);
+
 }
