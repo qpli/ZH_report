@@ -1,7 +1,7 @@
 package com.zh.controller;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.zh.Entity.*;
 import com.zh.Entity.file.FileItem;
 import com.zh.service.ColInfoService;
@@ -10,24 +10,23 @@ import com.zh.service.FillInfoService;
 import com.zh.service.ReportService;
 import com.zh.util.JsonResult;
 import com.zh.util.PlatformException;
-import org.apache.ibatis.annotations.Param;
+import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import org.jxls.common.Context;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: lisq
@@ -50,24 +49,70 @@ public class ReportController {
     @Autowired
     HostHolder hostHolder;
 
-    @GetMapping(path = {"/createIndex"})
+    /**
+     * 登陆成功后进入的页面，团队长进入新建报表页面，员工进入在线填写页面
+     * @return
+     */
+    @GetMapping(path = {"/successIndex"})
     @ResponseBody
     public ModelAndView creatIndex(){
-        ModelAndView view = new ModelAndView("/reportCreate.html");
+        ModelAndView view = null;
         Employee user = hostHolder.getUser();
+        if (user.getRoleId() == 1){//团队长
+            view = new ModelAndView("/leader/C_createReport.html");
+        }else {//普通员工
+            view = new ModelAndView("/employee/T_offlineUploadTable_New.html");
+        }
         view.addObject("user",user);
+        view.addObject("reportLists",allReport());
         return view;
     }
 
-    @GetMapping(path = {"/preview"})
+    /**
+     * 团队长母版页
+     * @param response
+     * @return
+     */
+    @GetMapping(path = {"/top"})
     @ResponseBody
-    public ModelAndView preview(HttpServletResponse response){
-        ModelAndView view = new ModelAndView("/C_previewTable.html");
+    public ModelAndView top(HttpServletResponse response){
+        ModelAndView view = new ModelAndView("/leader/C_Top.html");
         Employee user = hostHolder.getUser();
         view.addObject("user",user);
         view.addObject("reportLists",allReport());
         return view;
     }
+
+    /**
+     * 团队长查看报表
+     * @param response
+     * @param repoorId
+     * @return
+     */
+    @GetMapping(path = {"/previewTable"})
+    @ResponseBody
+    public ModelAndView preview(HttpServletResponse response,Integer repoorId){
+        ModelAndView view = new ModelAndView("/leader/C_previewTable.html");
+        ReportInfo reportInfo = reportService.getReportInfo(repoorId);
+        view.addObject("reportInfo",reportInfo);
+        return view;
+    }
+
+    /**
+     * 团队长审核页面
+     * @param response
+     * @param repoorId
+     * @return
+     */
+    @GetMapping(path = {"/checkTable"})
+    @ResponseBody
+    public ModelAndView checkTable(HttpServletResponse response,Integer repoorId){
+        ModelAndView view = new ModelAndView("/leader/C_checkTable.html");
+        ReportInfo reportInfo = reportService.getReportInfo(repoorId);
+        view.addObject("reportInfo",reportInfo);
+        return view;
+    }
+
 
     /**
      * 创建新报表
@@ -81,13 +126,13 @@ public class ReportController {
     public JsonResult createReport(String reportName,
                                    @RequestParam(value = "colNames[]") String[] colNames,
                                    @RequestParam(value = "bussKeys[]") boolean[] bussKeys,
-                                   Integer isCheck){
+                                   String isCheck){
         ReportInfo reportInfo  = new ReportInfo();
         reportInfo.setReportName(reportName);
         //获取当前用户
         String empId = hostHolder.getUser().getEmpId();
         reportInfo.setEmpId(empId);
-        reportInfo.setIsCheck(isCheck);
+        reportInfo.setIsCheck(Integer.valueOf(isCheck));
         String bussKey = "";
         for(int i = 1;i<bussKeys.length;i++){
             if(bussKeys[i-1]==true){
@@ -119,7 +164,55 @@ public class ReportController {
     @PostMapping("/auditDisplay")
     @ResponseBody
     public List<FillInfo> auditDisplay(Integer reportId){
+        System.out.println("ReportId: "+reportId);
         return fillInfoService.fillReportAll(reportId);
+    }
+    @PostMapping("/auditDisplayTest")
+    @ResponseBody
+    public  Map<String, Object> getUsersInfo(Integer reportId) {
+        List<FillInfo> fillInfos = fillInfoService.fillReportAll(reportId);
+        JSONArray data = ToJson(fillInfos);
+
+        if (data != null) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("code", 0);
+            jsonObject.put("msg", "");
+            jsonObject.put("count", data.size());
+            jsonObject.put("data", data);
+            return jsonObject;
+        }
+        return null;
+    }
+
+    /**
+     * 将用户信息转化成前台JSON
+     *
+     * @return String
+     */
+    public static JSONArray ToJson(List<FillInfo> fillInfos) {
+        JSONArray jsonArray = new JSONArray();
+        if (fillInfos != null && fillInfos.size() > 0) {
+            for (FillInfo fillInfo : fillInfos) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("id", fillInfo.getFillId());
+                jsonObject.put("empId", fillInfo.getEmpID());
+                jsonObject.put("name", fillInfo.getName());
+                jsonObject.put("colName", fillInfo.getColName());
+                jsonObject.put("fillDate",fillInfo.getFillDatetime());
+                jsonObject.put("flag",fillInfo.getStatus());
+                String status = "";
+                if (fillInfo.getStatus() == 0){
+                    status =  "未审核";
+                }else if(fillInfo.getStatus() == 1){
+                    status = "审核通过";
+                }else if (fillInfo.getStatus() == 2){
+                    status = "审核不通过";
+                }
+                jsonObject.put("status", status);
+                jsonArray.add(jsonObject);
+            }
+        }
+        return jsonArray;
     }
 
     /**
@@ -174,7 +267,6 @@ public class ReportController {
         return  JsonResult.success();
     }
 
-
     /**
      * 员工导出报表列信息
      *
@@ -189,11 +281,11 @@ public class ReportController {
     @ResponseBody
     public JsonResult<String> export(Integer reportId) {
         String excelTemplate ="excelTemplates/报表_template.xlsx";
-
         //本次导出需要的数据
         String[] list = colInfoService.queryExcel(reportId);
-
-        String reportName = reportService.getReportName(reportId);
+        System.out.println(reportId);
+        System.out.println("reportName:"+reportService.getReportInfo(reportId));
+        String reportName = reportService.getReportInfo(reportId).getReportName();
 
         try(InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(excelTemplate)) {
             if(is==null) {
@@ -202,8 +294,6 @@ public class ReportController {
             FileItem item = fileService.createFileTemp(reportName+"模板.xlsx");
             OutputStream os = item.openOutpuStream();
             Context context = new Context();
-
-//            context.putVar("reportName",reportName);
             int i = 0;
             //加入真实报表列信息
             for(;i<list.length;i++){
@@ -217,7 +307,6 @@ public class ReportController {
             }
 
             JxlsHelper.getInstance().processTemplate(is, os, context);
-//            os.close();
             //下载参考FileSystemContorller
             return  JsonResult.success(item.getPath());
         } catch (IOException e) {
@@ -240,20 +329,20 @@ public class ReportController {
         return null;
     }
 
-    @RequestMapping(path = {"/test"})
-    @ResponseBody
-    public ModelAndView loginIndex(){
-        ModelAndView view = new ModelAndView("/test.html");
-        view.addObject("test","名字");
-        return view;
-    }
+//    @RequestMapping(path = {"/test"})
+//    @ResponseBody
+//    public ModelAndView loginIndex(){
+//        ModelAndView view = new ModelAndView("/test.html");
+//        view.addObject("test","名字");
+//        return view;
+//    }
 
 
-    @GetMapping(path = {"/previewTable"})
-    @ResponseBody
-    public ModelAndView test(Integer repoorId){
-        System.out.println("测试 :  "+repoorId);
-        ModelAndView view = new ModelAndView("/test.html");
-        return view;
-    }
+//    @GetMapping(path = {"/previewTable"})
+//    @ResponseBody
+//    public ModelAndView test(Integer repoorId){
+//        System.out.println("测试 :  "+repoorId);
+//        ModelAndView view = new ModelAndView("/test.html");
+//        return view;
+//    }
 }

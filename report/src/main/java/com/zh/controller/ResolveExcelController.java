@@ -69,6 +69,7 @@ public class ResolveExcelController {
                                     @RequestParam("file") MultipartFile file,
                                     @RequestParam("reportId") Integer reportId) {
 
+        logger.info("进入上传填写后的报表！");
         ModelAndView view = new ModelAndView(new MappingJackson2JsonView());
 //        ModelAndView view = new ModelAndView( );
 
@@ -77,7 +78,7 @@ public class ResolveExcelController {
         System.out.println("是不是一个excel文件？"+isExcelFileName(filename));
         if (!isExcelFileName(filename)) {
 
-            return view.addObject("upload", "请上传后缀名是xls、xlsx的excel文件");
+            return view.addObject("msg", "请上传后缀名是xls、xlsx的excel文件");
         }
 
         try {
@@ -101,15 +102,16 @@ public class ResolveExcelController {
             logger.info("fillInfoList是否为空？"+fillInfolist.isEmpty());
             if(!fillInfolist.isEmpty()) {
                 fillInfoService.addFileInfo(fillInfolist,reportId);
+                view.addObject("msg","上传成功");
                 return view.addObject("upload", excelSet);
             }
             else{
-                return view.addObject("upload", "报表已上传，请勿重复上传");
+                return view.addObject("msg", "报表已上传，请勿重复上传");
             }
         } catch (Exception e) {
             System.out.println("上传excel出现异常");
             e.printStackTrace();
-            return view.addObject("upload", e.getMessage());
+            return view.addObject("msg", e.getMessage());
         }
 
     }
@@ -128,7 +130,7 @@ public class ResolveExcelController {
 
         String templateReportName = filename.substring(0,filename.lastIndexOf("."));
         if (!isExcelFileName(filename)) {
-            return view.addObject("upload", "请上传后缀名是xls、xlsx的excel文件");
+            return view.addObject("msg", "请上传后缀名是xls、xlsx的excel文件");
         }
         try {
             String uploadDir = request.getSession().getServletContext().getRealPath("/") + "upload/";
@@ -150,7 +152,7 @@ public class ResolveExcelController {
         } catch (Exception e) {
             System.out.println("上传excel出现异常");
             e.printStackTrace();
-            return view.addObject("upload", e.getMessage());
+            return view.addObject("msg", e.getMessage());
         }
     }
 

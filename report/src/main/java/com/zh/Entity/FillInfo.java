@@ -90,7 +90,7 @@ public class FillInfo {
     }
 
     public void setName(String name) {
-        name = name;
+        this.name = name;
     }
 
     public Integer getReportId() {

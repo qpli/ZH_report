@@ -2,6 +2,7 @@ package com.zh.controller;
 
 
 import com.zh.Entity.Employee;
+import com.zh.Entity.HostHolder;
 import com.zh.service.Emp_service;
 import com.zh.util.ReportUtil;
 import org.slf4j.Logger;
@@ -24,6 +25,16 @@ public class LoginController {
     @Autowired
     Emp_service emp_service;
 
+    @Autowired
+    ReportController reportController;
+
+    @Autowired
+    HostHolder hostHolder;
+
+    /**
+     * 登陆页面路由
+     * @return
+     */
     @RequestMapping(path = {"/","/index"})
     @ResponseBody
     public ModelAndView loginIndex(){
@@ -31,6 +42,40 @@ public class LoginController {
         return view;
     }
 
+    /**
+     * Top组件路由
+     * @return
+     */
+    @RequestMapping(path = {"/Ttop"})
+    @ResponseBody
+    public ModelAndView Top(){
+        logger.info("进入TOP路由");
+        ModelAndView view = new ModelAndView("/T_top.html");
+        Employee user = hostHolder.getUser();
+        view.addObject("user",user);
+        view.addObject("reportLists",reportController.allReport());
+        return view;
+    }
+
+    /**
+     * Top组件路由
+     * @return
+     */
+    @RequestMapping(path = {"/testOfflineUploadTable"})
+    @ResponseBody
+    public ModelAndView T_offlineUploadTable_New(){
+        ModelAndView view = new ModelAndView("/T_offlineUploadTable_New.html");
+        Employee user = hostHolder.getUser();
+        view.addObject("user",user);
+        view.addObject("reportLists",reportController.allReport());
+        return view;
+    }
+
+
+    /**
+     * 离线上传页面路由
+     * @return
+     */
     @GetMapping(path = {"/loginSuccess"})
     @ResponseBody
     public ModelAndView loginSuccessIndex(){
@@ -38,10 +83,29 @@ public class LoginController {
         return view;
     }
 
+    /**
+     * 注册页面路由
+     * @return
+     */
     @GetMapping(path = {"/regIndex"})
     @ResponseBody
     public ModelAndView regIndex(){
         ModelAndView view = new ModelAndView("/Register.html");
+        return view;
+    }
+
+
+    /**
+     * 审核页面路由
+     * @return
+     */
+    @GetMapping(path = {"/checkTable1"})
+    @ResponseBody
+    public ModelAndView checkTable1(){
+        ModelAndView view = new ModelAndView("/C_checkTable1.html");
+        Employee user = hostHolder.getUser();
+        view.addObject("user",user);
+        view.addObject("reportLists",reportController.allReport());
         return view;
     }
 
@@ -152,6 +216,4 @@ public class LoginController {
         emp_service.logout(ticket);
         return "redirect:/";
     }
-
-
 }

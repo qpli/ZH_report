@@ -1,0 +1,128 @@
+<!--@Author 卞秦豫-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="favicon.ico" >
+<link rel="Shortcut Icon" href="favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+
+<!--/meta 作为公共模版分离出去-->
+
+<title>灵活报表管理系统</title>
+<meta name="keywords" content="H-ui.admin v3.0,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+<meta name="description" content="H-ui.admin v3.0，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+
+<style>
+			#changesize {
+				font-size: xx-large;
+			}
+			
+			#menu-product {
+				display: inline;
+			}
+			tr{
+				height: 30px;
+				font-size: 30px;
+				text-align: center;
+				
+			}
+</style>
+		
+</head>
+<body>
+	
+<div class="headerpage"></div>
+<div class="dislpayArrow hidden-xs">
+			<a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a>
+		</div>
+		
+<article class="cl pd-20">	
+	<!--填充数据-->
+	<form action="/uploadExcel"  method="post">
+	<div class="col-xs-3 col-sm-6 col-xs-offset-2 " style="box-shadow:2px 2px  1px 1px  #aaa; margin-bottom:20px; margin-top: 30px;">
+		<div style=" margin-bottom: 20px; margin-top: 20px;">
+			<label class="form-label col-xs-6 col-sm-2">选择表名：</label>
+			<select class="input-text" style="width: 30%;" name="TableName">
+
+				<!-- <c:forEach items="${sessionScope.reportinfos}" var="reportinfo">
+					<option value="reportinfo.reportId">Volvo</option>
+	
+				</c:forEach> -->
+
+				    <select th:each="reportInfo:${reportLists}" name="reportId">
+						<li user:id="${reportInfo.reportId}">
+							<a th:href="@{/previewTable(repoorId=${reportInfo.reportId})}" class="SelectTable">
+								<option th:text="${reportInfo.reportName}"></option>
+							</a>
+						</li>
+					</select>
+
+				<!-- <option value="volvo">Volvo</option>
+				<option value="saab">Saab</option>
+				<option value="opel">Opel</option>
+				<option value="audi">Audi</option> -->
+			</select>
+			<!-- <button type="button"  id="upload" class="btn btn-primary">下载表模板</button> -->
+			<input class="btn btn-primary radius" type="button" id="upload" value="&nbsp;&nbsp;下载表模板&nbsp;&nbsp;">
+		</div>
+		
+			<div class="text-align: center;">
+				<label class="form-label col-xs-4 col-sm-3">上传表信息：</label>
+			<input type="file" name="file" />
+			<!-- <input name="reportId"  th:th:text="${reportInfo.reportName}"/>	 -->
+			</div>
+			
+			<div style="text-align: center; margin-top: 30px;margin-bottom: 30px;">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;上传&nbsp;&nbsp;">
+				
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.page.js"></script>
+<!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script> 
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+<script>
+	$('#upload').click(function(){
+	   var reportName = "${reportInfo.reportName}";
+	   
+	});
+
+	//th:text="${user.name}
+    $(function(){
+      
+        $(".headerpage").load("T_Top.html");
+       
+    });
+</script>		
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

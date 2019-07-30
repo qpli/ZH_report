@@ -17,14 +17,14 @@ import java.util.List;
 @Component
 public interface ReportDAO {
     final String tableName = "report_info";
-    final String field = " emp_id, report_name, creat_time, busskey";
+    final String field = " emp_id, report_name, creat_time, busskey,is_check";
 
     /**
      * 向数据库中添加一个新的报表信息
      * @param reportInfo
      * @return
      */
-    @Insert({"insert into ", tableName,"(",field ,") values (#{empId},#{reportName},#{creattime},#{bussKey})"})
+    @Insert({"insert into ", tableName,"(",field ,") values (#{empId},#{reportName},#{creattime},#{bussKey},#{isCheck})"})
     int add(ReportInfo reportInfo);
 
     /**

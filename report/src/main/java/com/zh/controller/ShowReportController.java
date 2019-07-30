@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,13 +47,14 @@ public class ShowReportController {
                                               @RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
                                               @RequestParam(value = "pageSize",defaultValue = "5") Integer pageSize) {
         ModelAndView view = new ModelAndView(new MappingJackson2JsonView());
-
+        String[] conInfo;
         if(colInfoService.queryExcel(reportId).length==0||colInfoService.queryExcel(reportId)==null){
             view.addObject("该表没有列！");
             return view;
         }
         else {
-            view.addObject("colInfo", colInfoService.queryExcel(reportId));
+            conInfo = colInfoService.queryExcel(reportId);
+            view.addObject("colInfo",conInfo );
         }
 
         //如果当前用户为普通用户（非团队长），只能查看自己所属团队的报表
@@ -60,11 +64,13 @@ public class ShowReportController {
             if(hostHolder.getUser().getOrgId()==orgId){
                 PageHelper.startPage(pageNum, pageSize);
                 List<FinalReport> reportDatil = finalReportService.getInfoByReportId(reportId);
+                List<String> strs  = listToString(reportDatil,conInfo);
                 if (reportDatil.isEmpty()) {
-                    view.addObject("该表不存在！");
+                    view.addObject("finalreport", strs);
+//                    view.addObject("该表不存在！");
                     return view;
                 } else {
-                    view.addObject("finalreport", reportDatil);
+                    view.addObject("finalreport", strs);
                     return view;
                 }
             }else {
@@ -78,11 +84,13 @@ public class ShowReportController {
             if (hostHolder.getUser().getEmpId().equals(reportService.getCreateEmp(reportId))) {
                 PageHelper.startPage(pageNum, pageSize);
                 List<FinalReport> reportDatil = finalReportService.getInfoByReportId(reportId);
+                List<String> strs  = listToString(reportDatil,conInfo);
                 if (reportDatil.isEmpty()) {
-                    view.addObject("该表不存在！");
+                    view.addObject("finalreport", strs);
+//                    view.addObject("该表不存在！");
                     return view;
                 } else {
-                    view.addObject("finalreport", reportDatil);
+                    view.addObject("finalreport", strs);
                     return view;
                 }
             } else {  //如果该表不是该团队长建的表
@@ -94,6 +102,31 @@ public class ShowReportController {
             return view;
         //return view;
 
+    }
+
+    public  List<String> listToString(List<FinalReport> list,String[] conInfo){
+        List<String> finlist = new ArrayList<>();
+        StringBuilder sb;
+        for(FinalReport fin: list){
+            sb = new StringBuilder();
+            for(int i = 1;i<=conInfo.length;i++){
+                Method[] method = FinalReport.class.getMethods();
+                for (Method met : method) {
+                    if (met.getName().equals("getCol"+i)){
+                        try {
+                            String ss = (String) met.invoke(fin);
+                            sb.append(ss+"!,");
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+            finlist.add(sb.toString());
+        }
+        return  finlist;
     }
 
 

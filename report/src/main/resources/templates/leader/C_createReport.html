@@ -1,0 +1,303 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="Bookmark" href="favicon.ico">
+    <link rel="Shortcut Icon" href="favicon.ico"/>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="lib/html5.js"></script>
+    <script type="text/javascript" src="lib/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
+    <!--新加的内容开始-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="./js/xlsx.core.min.js"></script>
+
+    <!--新加的内容结束-->
+    <!--[if IE 6]>
+    <script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js"></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <!--/meta 作为公共模版分离出去-->
+
+    <title>灵活报表管理系统</title>
+    <meta name="keywords" content="H-ui.admin v3.0,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+    <meta name="description" content="H-ui.admin v3.0，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+
+</head>
+<body>
+
+<div class="headerpage"></div>
+<section class="Hui-article-box">
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 新建报表模板</nav>
+    <div class="Hui-article">
+        <article class="cl pd-20">
+            <div class="mt-20">
+                <form id="fromNewTpl" onsubmit="return false;" method="post">
+                    <div class="row cl">
+                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>报表名称：</label>
+                        <div class="formControls col-xs-8 col-sm-9">
+                            <input type="text" class="input-text" value="" placeholder="" id="reportNameId"
+                                   name="reportName">
+                        </div>
+                    </div>
+                    <div id="div0_0">
+                        <div class="row cl" id="div1_0">
+                            <label class="form-label col-xs-4 col-sm-2" id="lebel0"><span
+                                    class="c-red">*</span>列属性名：</label>
+                            <div class="formControls col-xs-8 col-sm-9" id="div2_0">
+                                <input type="text" class="input-text" value="" placeholder="" id="input0"
+                                       name="colName">
+                                <div class="row cl" style="text-align:center;vertical-align:middle">
+                                    <input type="button" value="继续添加列属性" id="addBtn" class="btn btn-primary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <button type='button' class='btn btn-danger radius' onclick='deleteItem()'><i class='Hui-iconfont'>&#xe6e2;</i>批量删除
+                </button>
+                <button type='button' class='btn btn-primary' id="offline"><i class='Hui-iconfont'>&#xe645;</i>离线上传
+                </button>
+                <!-- 离线上传的框 -->
+                <div id="show" style="display:none;float: right">
+                    <input type="file" id="excel-file">
+                    <button type="button" id="shangchuan" class="btn btn-primary">上传</button>
+                </div>
+                <table class="table table-border table-bordered table-bg table-hover" name="tbl" id="tbl">
+                    <thead>
+                    <tr class="text-c">
+                        <th width="200"><input type="checkbox" name="ifAll" onclick="checkAll()"></th>
+                        <th>列属性名</th>
+                        <th width="200">是否为业务主键</th>
+                        <th width="200">操作</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="row cl" style="text-align:center;vertical-align:middle">
+                    <div>
+                        <label class="control-label">是否需要审核</label>
+                        <input name="isCheck" type="radio" checked="checked" value="0"/>否
+                        <input name="isCheck" type="radio" value="1"/>是                         
+                    </div>
+                    <div>
+                        <button type="button" id="FaBu_id" class="btn btn-primary">发布</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.page.js"></script>
+<!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+
+<script type="text/javascript">
+    var col_name;
+    var arrAll = new Array();
+    // 提交按钮添加 click事件
+    $("#addBtn").click(function () {
+        if ($("#input0").val() == "") {
+            alert("列属性名不能为空");
+            return false;
+        }
+        if ($("#reportNameId").val() == "") {
+            alert("报表名不能为空");
+            return false;
+        }
+        // 获取form的值
+        col_name = $("input[name='colName']").val();
+        var tr = $("<tr  class='text-c'><td><input type='checkbox'  id='selected'/></td><td>" + col_name + "</td><td align='center'><input type='checkbox' value=''  name='bussKey'></td><td><button type='button' class='btn btn-danger radius' onclick='deleteRow(this)'><i class='Hui-iconfont'>&#xe6e2;</i>删除</button></td></tr>");
+        $("table").append(tr);
+        // form重置，清除刚才表单填写的内容
+        document.getElementById("input0").value = "";
+    });
+
+    $('#FaBu_id').click(function () {
+        var arrTds = new Array();
+        var groupTypeId = new Array();
+        //此处可做表单验证
+        if ($("#reportNameId").val() == "") {
+            alert("报表名不能为空");
+            return false;
+        }
+        $("table tr").each(function () {
+            arrTds.push($(this).find("td").eq(1).text());
+        });
+        arrTds.splice(0, 1);
+        if (arrTds.length == 0) {
+            alert("列属性名不能为空");
+            return false;
+        }
+        var boxes = document.getElementsByName("bussKey");
+        for (var i = 0; i < boxes.length; i++) {
+            if (boxes[i].checked) {
+                groupTypeId[i] = true;
+            }
+            else {
+                groupTypeId[i] = false;
+            }
+        }
+
+        var check = document.getElementsByName("isCheck");
+        var checkValue;
+        for (var i = 0; i < check.length; i++) {
+            if (check[i].checked == true) {
+                checkValue = check[i].value;
+                break;
+            }
+        }
+        var postData = {
+            "reportName": $("#reportNameId").val(),
+            "colNames": arrTds,
+            "bussKeys": groupTypeId,
+            "isCheck": checkValue
+        }
+        console.log(postData);
+        $.ajax({
+            type: "POST",
+            url: "/create",
+            data: postData,
+            dataType: 'JSON',
+            success: function (data) {
+                console.log(data);
+                if (data.code === '200') {
+                    //找打印下数据data
+                    alert('报表创建成功');
+                    window.location.href = '/successIndex';
+                } else {
+                    alert(data.msg)
+                }
+                //找打印下数据data
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log('error');
+                console.log(XMLHttpRequest.status);//200
+                console.log(XMLHttpRequest.readyState);//4
+                console.log(textStatus);//parsererror
+            },
+            complete: function () {
+                console.log("请求完成");
+            }
+        });
+    });
+    //点击离线上传事件
+    $("#offline").click(function () {
+        $("#show").toggle();//toggle() 的作用就是当对象是显示的就隐藏，当是隐藏的则显示。
+    });
+    //点击上传按钮事件
+    $("#shangchuan").click(function () {
+        $("#show").toggle();//toggle() 的作用就是当对象是显示的就隐藏，当是隐藏的则显示。
+        console.log("开始填充数据");
+
+        var len = arrAll.length;
+        for (var i = 0; i < len; i++) {
+            if (i == 0) {
+                $("#reportNameId").val(arrAll[0]);
+            }
+            else {
+                var tr = $("<tr  class='text-c'><td><input type='checkbox'  id='selected'/></td><td>" + arrAll[i] + "</td><td align='center'><input type='checkbox' value=''  name='bussKey'></td><td><button type='button' class='btn btn-danger radius' onclick='deleteRow(this)'><i class='Hui-iconfont'>&#xe6e2;</i>删除</button></td></tr>");
+                $("table").append(tr);
+            }
+        }
+    });
+
+    $('#excel-file').change(function (e) {
+        var fileType = $("#excel-file").val();
+        //文件名称
+        var fileName = fileType.replace(/^.+?\\([^\\]+?)(\.[^\.\\]*?)?$/gi, "$1");
+        // console.log("fileName:"+fileName);
+        var files = e.target.files;
+        //console.log("files.value:"+files.value);
+        var fileReader = new FileReader();//读取操作就是由它完成.
+        fileReader.onload = function (ev) {// 成功读取，当读取完成后回调这个函数
+            try {
+                //然后此时文件的内容存储到了result中,直接操作即可
+                var data = ev.target.result,
+
+                    //workbook对象可以获取到文件的详细信息
+                    workbook = XLSX.read(data, {
+                        type: 'binary'
+                    }), // 以二进制流方式读取得到整份excel表格对象
+
+                    persons = []; // 存储获取到的数据
+            } catch (e) {
+                console.log('文件类型不正确');
+                return;
+            }
+            // 表格的表格范围，可用于判断表头是否数量是否正确
+            var fromTo = '';//要读取EXCEL的表格范围   当我填写一行的时候，数据范围是：A1:C2
+            var excelHeadStr = '';             //读取的EXCEL表头
+            var headCol = '';                  //表头列号
+            var arr = ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1', 'W1', 'X1', 'Y1', 'Z1']
+            arrAll.push(fileName);
+            // 遍历每张表读取,sheet是每一个sheet表
+            for (var sheet in workbook.Sheets) {
+                if (workbook.Sheets.hasOwnProperty(sheet)) {
+                    fromTo = workbook.Sheets[sheet]['!ref'];// // 获取EXCEl文件中存在数据的行号和列号
+                    console.log("fromTo:" + fromTo);//A1:C2
+                    for (var j = 0; j < 3; j++) {
+                        arrAll.push(workbook.Sheets[sheet][arr[j]].h);
+                        //excelHeadStr += workbook.Sheets[sheet][arr[j]].h + ','
+                    }
+                    console.log("arrAll:" + arrAll);//3月份员工考核数据,员工号,员工姓名,考核成绩
+                    console.log("len:" + arrAll.length);
+                }
+            }
+        };
+        // 以二进制方式打开文件
+        fileReader.readAsBinaryString(files[0]);
+
+    });
+
+    // 删除按钮点击的一行
+    function deleteRow(obj) {
+        var i = obj.parentNode.parentNode.rowIndex;
+        //alert(i);
+        document.getElementById('tbl').deleteRow(i);
+    }
+
+    // 删除复选框选中的多行
+    function deleteItem() {
+        var item = $("#selected:checked");
+        //然后再循环这个选中的项，用jquery获取这个复选项的父节点，通过div的样式名：item去取得父div，
+        //因为我们要删除的是这个div，而不是只删除复选框。得到对应的div后，调用remove方法就行了
+        var len = item.length;
+        for (var i = 0; i < len; i++) {
+            $(item[i]).parents(".text-c").remove();
+        }
+    }
+</script>
+
+<script>
+    $(function(){
+
+        $(".headerpage").load("/top");
+
+    });
+</script>
+</body>
+</html>

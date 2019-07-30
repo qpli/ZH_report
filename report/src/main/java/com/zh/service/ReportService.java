@@ -74,7 +74,8 @@ public class ReportService {
             return map;
         }else {//特定用户获取用户所在团队的所有报表
             List<ReportInfo> rep = reportDAO.getAllReportInteam(empId);
-            if (rep != null){
+            System.out.println(rep.size());
+            if (rep != null && rep.size()>0){
                 map.put(rep.get(0).getOrgName(),rep);
             }
             return map;
@@ -83,6 +84,7 @@ public class ReportService {
 
     public List<ReportInfo> mapToList( Map<String, List<ReportInfo>> map){
         List<ReportInfo> list = new ArrayList<>();
+        if (map == null) return list;
         for (Map.Entry<String, List<ReportInfo>> entry : map.entrySet()) {
             List<ReportInfo> listValue = entry.getValue();
             String key = entry.getKey();
@@ -99,8 +101,8 @@ public class ReportService {
      * @param reportId
      * @return
      */
-    public String getReportName(Integer reportId){
-        return reportDAO.getReportInfo(reportId).getReportName();
+    public ReportInfo getReportInfo(Integer reportId){
+        return reportDAO.getReportInfo(reportId);
     }
 
     /**
