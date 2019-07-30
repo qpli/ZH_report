@@ -1,0 +1,103 @@
+<!--@Author 卞秦豫-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>灵活报表系统注册页面</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Validation Signup Form Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- fonts -->
+<link href="http://fonts.googleapis.com/css?family=Muli:300,400" rel="stylesheet">
+<!-- /fonts -->
+<!-- css -->
+<link href="/css/register_css/register_bootstrap.css" rel="stylesheet" type='text/css' media="all" />
+<link href="/css/register_css/register_style.css" rel="stylesheet" type='text/css' media="all" />
+	<script type="application/javascript" src="js/reportJS/register.js"></script>
+<!-- /css -->
+<style>
+	.test{
+		background-color:transparent;
+		width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+	}
+	/*.test2{*/
+	/*	font-size: 100px;*/
+	/*	!*color: #000000;*!*/
+	/*	!*font*!*/
+	/*}*/
+</style>
+</head>
+<body>
+<h1 class="w3ls">欢迎注册灵活报表系统</h1>
+	<div class="content-agileits">
+		<form action="/reg" method="post" data-toggle="validator" role="form">
+			<input type="hidden" name="user_authority" value="3"/>
+			<div class="form-group 小贝壳网站模板 w3 w3l">
+				<label class="control-label">工号</label>
+				<input type="text" class="form-control" id="petname_empid" name="empId" placeholder="Employee number" data-error="请输入姓名" required>
+				<div class="help-block with-errors"></div>
+			</div>
+			<div class="form-group 小贝壳网站模板 w3 w3l">
+				<label  class="control-label">姓名</label>
+				<input type="text" class="form-control" id="petname_empName" name="empName" placeholder="Name" data-error="请输入姓名" required>
+				<div class="help-block with-errors"></div>
+			</div>
+			<div class="form-group agile agileits-小贝壳网站模板 w3-agile">
+				<label for="inputPassword" class="control-label">密码</label>
+				<div class="form-inline row">
+					<div class="form-group col-sm-6 agileits-小贝壳网站模板">
+						<input type="password" data-minlength="6" class="form-control" id="inputPassword" name="password" placeholder="Password" required>
+						<div class="help-block">Minimum of 6 characters</div>
+					</div>
+					<div class="form-group col-sm-6 w3-agile">
+						<input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" placeholder="Confirm Password" required>
+						<div class="help-block with-errors"></div>
+					</div>
+				</div>
+			<div class="form-group 小贝壳网站模板 w3 w3l">
+				<label class="control-label">所属团队</label>
+				<input type="text" class="form-control" id="petname_orgName" name="orgName" placeholder="Petname" data-error="请输入姓名" required>
+<!--				<select class="form-control test"   placeholder="请输入所属团队名" style="height: 42px;" >-->
+
+<!--	<option value="saab">请输入所属团队名</option>-->
+<!--	<option value="saab">系统开发岗</option>-->
+
+<!--	<option value="opel">数据分析岗</option>-->
+
+<!--	<option value="audi">产品经理岗</option>-->
+
+<!--</select>-->
+				
+				<div class="help-block with-errors"></div>
+			</div>
+			<div class="form-group 小贝壳网站模板 w3 w3l">
+	<label  class="control-label">您的职位是：</label>
+	<!--<input type="text" class="form-control" id="petname" name="user_petname" placeholder="Petname" data-error="请输入姓名" required>-->
+	<div>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+		<label><input name="roleId" class="test2" type="radio" value="1" />&nbsp;&nbsp;
+		<font style="color:white;">团队长</font>
+		 </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label><input name="roleId" class="test2" type="radio" value="0" checked/>&nbsp;&nbsp;<font style="color:white;">队员</font></label>
+
+	</div>
+	<!--<div class="help-block with-errors"></div>-->
+</div>
+			
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-lg">Submit</button>
+			</div>
+		</form>
+    </div>
+<p class="copyright-w3ls">© 2019 All Rights Reserved | Design by 招商银行 系统开发部</a></p>
+<!-- js files -->
+<script src="js/register_js/register_jquery-1.10.2.min.js"></script>
+<script src="js/register_js/register_bootstrap.min.js"></script>
+<script src="js/register_js/register_validator.min.js"></script>
+<!-- /js files -->
+</body>
+</html>

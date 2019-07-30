@@ -81,7 +81,7 @@ img {
 
 /*--- end reset code ---*/
 body {
-	background:url(/ProjectManagement_Contest/images/register_images/content.jpg) no-repeat;
+	background:url(../../images/register_images/content.jpg) no-repeat;
 	background-position:center;
 	background-attachment:fixed;
 	background-size:100% 100%;

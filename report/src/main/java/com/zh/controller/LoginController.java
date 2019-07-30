@@ -38,6 +38,13 @@ public class LoginController {
         return view;
     }
 
+    @GetMapping(path = {"/regIndex"})
+    @ResponseBody
+    public ModelAndView regIndex(){
+        ModelAndView view = new ModelAndView("/Register.html");
+        return view;
+    }
+
     /**
      * 测试注册
      * @param username
