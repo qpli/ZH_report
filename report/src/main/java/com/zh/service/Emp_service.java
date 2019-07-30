@@ -107,11 +107,12 @@ public class Emp_service {
                 organization.setEmpId(empId);
                 organization.setOrgName(orgName);
                 orgService.addOrg(organization);
-
+                System.out.println("注册团队成功！");
+                System.out.println("团队长的团队为："+orgService.selectByOrgName(orgName).getOrgId());
                 emp.setOrgId(orgService.selectByOrgName(orgName).getOrgId());
                 empdao.addUser(emp);
+                System.out.println("注册新团队的团队长成功");
             }
-
             else {
                 if(flag==0){
                     map.put("msgorg", "该团队已经有团队长，不能重复覆盖");

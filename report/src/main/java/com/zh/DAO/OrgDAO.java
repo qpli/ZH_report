@@ -15,10 +15,10 @@ public interface OrgDAO {
     String SELECT_FIELDS = " org_id, org_name, parent_id, emp_id, del_flag";
 
     @Insert({"insert into ", TABLE_NAME, "(", INSET_FIELDS,
-            ") values (#{orgName},#{empId}})"})
+            ") values (#{orgName},#{empId})"})
     int addOrg(Organization organization);
 
-    @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where org_id=#{orgname}"})
+    @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where org_name=#{orgname}"})
     Organization selectByOrgName(String orgname);
 
     @Update({"update ",TABLE_NAME," set emp_id = #{empId} where org_name = #{orgName}"})
