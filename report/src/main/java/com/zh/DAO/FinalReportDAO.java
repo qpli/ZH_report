@@ -53,8 +53,8 @@ public interface FinalReportDAO {
      * 通过业务主键获取信息
      * @return
      */
-    @Select({" select * from ",TABLE_NAME," where ${jointWhereClause}"})
-    FinalReport getInfoByBussKey(String jointWhereClause);
+    @Select({" select * from ",TABLE_NAME," where ${jointWhereClause} and report_id = #{reportId}"})
+    FinalReport getInfoByBussKey(String jointWhereClause,Integer reportId);
 
 
     @Select({" select * from ",TABLE_NAME," where report_id = #{report_id}"})

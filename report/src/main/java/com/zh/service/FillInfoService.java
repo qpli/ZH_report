@@ -130,7 +130,7 @@ public class FillInfoService {
                 }
                 //判断业务主键在数据库中是否存在
                 String sqlClause = jointWhereClause(fillInfo,keys);
-                FinalReport finalReport= finalReportDAO.getInfoByBussKey(sqlClause);
+                FinalReport finalReport= finalReportDAO.getInfoByBussKey(sqlClause,reportId);
                 logger.info("业务主键是否存在"+JSON.toJSONString(finalReport));
                 FinalReport finReport = convertToFinalReport(fillInfo,list.get(0),finalReport);
                 if (finalReport == null){//若不存在，则插入
@@ -243,7 +243,8 @@ public class FillInfoService {
         String[] fillInfo = objectToString(finalReport);
         //判断业务主键在数据库中是否存在
         String sqlClause = jointWhereClause(fillInfo,keys);
-        FinalReport fReport= finalReportDAO.getInfoByBussKey(sqlClause);
+        System.out.println("sqlClause: "+sqlClause);
+        FinalReport fReport= finalReportDAO.getInfoByBussKey(sqlClause,finalReport.getReportId());
         if (fReport == null){//若不存在，则插入
             finalReport.setCreatTime(new Date());
             finalReport.setCreatUser(empId);

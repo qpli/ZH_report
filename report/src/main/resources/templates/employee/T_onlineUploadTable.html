@@ -95,17 +95,6 @@
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="application/javascript">
 
-    // Object.addEventListener('pageshow', function (e) {
-    //     if (e.persisted) {
-    //         showTable(repoorId);
-    //         // clearTimeout(h);
-    //         // h = setTimeout(setUnitA, 300);
-    //     }
-    // }, false);
-    // $("#mainContent").onformchange=function () {
-    // $("#mainContent").onvrdisplayfocus=function () {
-
-    // $("#mainContent").onvrdisplayfocus=function () {
     $("#mainContent").onformchange=function () {
         showTable(repoorId);
     }
@@ -153,8 +142,8 @@
         // dataType:'json',
         data: {"reportId": repoorId},
         success: function (data) {
-
-            console.log('进入画表Ajax11111');
+            if (data.colInfo == null) return;
+            console.log(data);
             var table = $("<table class='table table-border table-bordered table-hover table-bg table-sort'>");
             table.appendTo($("#creatcTable"));//将table显示在id为createtable的div中
             var trHeader = $("<tr class='text-c'></tr>");
@@ -163,6 +152,7 @@
                 var td = $("<td  class='text-c' style='background-color: #9dc7e7;font-size: 16px;font-weight:bold'>" + data.colInfo[i] + "</td>");//data.columns[j].title:"员工编号"
                 td.appendTo(trHeader);
             }
+            if (data.finalreport == null) return;
             for (var i = 0; i < data.finalreport.length; i++) {//
                 var tr = $("<tr  class='text-c'></tr>");//001
                 tr.appendTo(table);

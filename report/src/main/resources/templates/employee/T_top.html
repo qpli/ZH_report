@@ -11,19 +11,7 @@
             <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
                 <ul class="cl">
                     <li class="dropDown dropDown_hover">
-                        <a href="#" class="dropDown_A"><span th:text="${user.name}"></span><i
-                                class="Hui-iconfont">&#xe6d5;</i></a>
-                        <ul class="dropDown-menu menu radius box-shadow">
-                            <li>
-                                <a href="javascript:;" onClick="myselfinfo()">个人信息</a>
-                            </li>
-                            <li>
-                                <a href="#">切换账户</a>
-                            </li>
-                            <li>
-                                <a href="#">退出</a>
-                            </li>
-                        </ul>
+                        <a href="#" class="dropDown_A"><span th:text="${user.name}"></span></a>
                     </li>
                     <li id="Hui-skin" class="dropDown right dropDown_hover">
                         <a href="javascript:;" class="dropDown_A" title="换肤"><i class="Hui-iconfont"
@@ -48,6 +36,9 @@
                                 <a href="javascript:;" data-val="orange" title="橙色">橙色</a>
                             </li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="/logout">退出</a>
                     </li>
                 </ul>
             </nav>

@@ -27,7 +27,7 @@ public class LoginRequiredInterceptor implements HandlerInterceptor{
             //这个拦截器可以让没有登陆的用户无法访问某些页面、
             logger.info("进入登陆拦截器，当前用户为：" +hostHolder.getUser());
             if (hostHolder.getUser() == null) {
-                httpServletResponse.sendRedirect("http://localhost:8081/");
+                httpServletResponse.sendRedirect("/");
                 return false;
             }
             return true;

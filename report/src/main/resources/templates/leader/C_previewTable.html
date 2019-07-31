@@ -75,6 +75,7 @@
                 data: {"reportId":reportId},
                 success: function(data) {
                     console.log(data);
+                    if (data.colInfo == null) return;
                     var table = $("<table class='table table-border table-bordered table-hover table-bg table-sort'>");
                     table.appendTo($("#creatTable"));//将table显示在id为createtable的div中
                     var trHeader = $("<tr class='text-c'></tr>");
@@ -83,7 +84,7 @@
                         var td = $("<td  class='text-c' style='background-color: #9dc7e7;font-size: 16px;font-weight:bold'>" + data.colInfo[i] + "</td>");//data.columns[j].title:"员工编号"
                         td.appendTo(trHeader);
                     }
-
+                    if (data.finalreport == null) return;
                     for (var i = 0; i < data.finalreport.length; i++) {//
                         var tr = $("<tr  class='text-c'></tr>");//001
                         tr.appendTo(table);

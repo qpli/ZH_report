@@ -47,16 +47,16 @@ public class ShowReportController {
                                               @RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
                                               @RequestParam(value = "pageSize",defaultValue = "500") Integer pageSize) {
         ModelAndView view = new ModelAndView(new MappingJackson2JsonView());
-        String[] conInfo;
-        if(colInfoService.queryExcel(reportId).length==0||colInfoService.queryExcel(reportId)==null){
-            view.addObject("该表没有列！");
+        String[] conInfo = colInfoService.queryExcel(reportId);
+        if(conInfo.length==0||conInfo==null){
+//            view.addObject("该表没有列！");
+            view.addObject("colInfo",null );
+            view.addObject("finalreport", null);
             return view;
         }
         else {
-            conInfo = colInfoService.queryExcel(reportId);
             view.addObject("colInfo",conInfo );
         }
-
         //如果当前用户为普通用户（非团队长），只能查看自己所属团队的报表
         if(hostHolder.getUser().getRoleId()==0){
             String creat_emp = reportService.getCreateEmp(reportId);
