@@ -1,0 +1,191 @@
+<!--@Author 卞秦豫-->
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="Bookmark" href="favicon.ico">
+    <link rel="Shortcut Icon" href="favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
+    <title>灵活报表系统</title>
+    <meta name="keywords" content="H-ui.admin v3.0,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
+    <meta name="description" content="H-ui.admin v3.0，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+    <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+    <style>
+
+        #menu-product {
+            display: inline;
+        }
+
+        tr {
+            height: 30px;
+            font-size: 30px;
+            text-align: center;
+
+        }
+    </style>
+
+</head>
+
+<body onpageshow="myFunction(event)">
+<div class="headerpage"></div>
+
+<div class="dislpayArrow hidden-xs">
+    <a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a>
+</div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 填写表单信息<span
+            class="c-gray en">&gt;</span>在线填写
+        <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+           href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a>
+    </nav>
+    <div class="Hui-article">
+        <article class="cl pd-20">
+            <input type="hidden" id="reportId">
+            <form id="form1" name="form1" method="post" action="">
+					<span style="text-align: center;display:block;">
+					<label>
+						<font size="3">请选择表名信息：</font>
+					</label>
+					<select class="input-text" style="width: 30%;" name="TableName" id="orgnize" placeholder="请选择报表">
+					<option th:each="reportInfo : ${reportLists}" th:value="${reportInfo.reportId}"
+                            th:text="${reportInfo.reportName}"></option>
+					</select>
+					</span>
+            </form>
+
+            <a href="javascript:;" onclick="table_add('添加表内容','/tableInfo?reportId='+repoorId,'800','500')"
+               class="btn btn-primary radius"><i class="Hui-iconfont">&#xe610;</i> 增加</a>
+
+            <div style="border:2px;
+                border-color:#00CC00; 
+                margin-left:20%;
+                margin-top:20px" id="mainContent">
+            </div>
+
+        </article>
+        <div id="creatcTable">
+
+        </div>
+    </div>
+
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.page.js"></script>
+<!--/_footer /作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+<script type="application/javascript">
+
+    // Object.addEventListener('pageshow', function (e) {
+    //     if (e.persisted) {
+    //         showTable(repoorId);
+    //         // clearTimeout(h);
+    //         // h = setTimeout(setUnitA, 300);
+    //     }
+    // }, false);
+    // $("#mainContent").onformchange=function () {
+    // $("#mainContent").onvrdisplayfocus=function () {
+
+    // $("#mainContent").onvrdisplayfocus=function () {
+    $("#mainContent").onformchange=function () {
+        showTable(repoorId);
+    }
+    function myFunction(event) {
+        showTable(repoorId);
+    };
+    $(function () {
+        $(".headerpage").load("Ttop");
+    });
+    var repoorId;
+    repoorId = $("#orgnize").get(0).selectedIndex = 1;
+    repoorId = $("#orgnize ").val();
+    var a = parseInt(String(repoorId), 10);
+    console.log(repoorId)
+    console.log(repoorId)
+    $("#orgnize").val(repoorId);
+    //js代码
+    $("#orgnize").select({
+        placeholder: '请选择报表',
+        allowClear: true
+    });
+    $("#orgnize").on("change", function () {
+        var seled = $(this).val();
+        $("#reportId").val(seled);
+        repoorId = $("#reportId").val();
+        console.log("reportId: "+repoorId)
+        // $("#creatcTable").empty();
+        showTable(repoorId);
+        // repoorId = $("#reportId").val();
+    });
+
+    /*管理员-增加*/
+    function table_add(title, url, w, h) {
+        showTable(repoorId);
+        layer_show(title, url, w, h);
+    };
+    function showTable(repoorId){
+        $("#creatcTable").empty();
+    $.ajax({
+        type: "POST",
+        url: "/leaderShowFinalReport",
+        // async: false,
+        // contentType: false,
+        // processData: false,
+        // dataType:'json',
+        data: {"reportId": repoorId},
+        success: function (data) {
+
+            console.log('进入画表Ajax11111');
+            var table = $("<table class='table table-border table-bordered table-hover table-bg table-sort'>");
+            table.appendTo($("#creatcTable"));//将table显示在id为createtable的div中
+            var trHeader = $("<tr class='text-c'></tr>");
+            trHeader.appendTo(table);//将trHeader显示在id为table中
+            for (var i = 0; i < data.colInfo.length; i++) {//遍历表头
+                var td = $("<td  class='text-c' style='background-color: #9dc7e7;font-size: 16px;font-weight:bold'>" + data.colInfo[i] + "</td>");//data.columns[j].title:"员工编号"
+                td.appendTo(trHeader);
+            }
+            for (var i = 0; i < data.finalreport.length; i++) {//
+                var tr = $("<tr  class='text-c'></tr>");//001
+                tr.appendTo(table);
+                var str = data.finalreport[i].split("!,");
+                for (var j = 0; j < data.colInfo.length; j++) {
+                    if (str[j] == "null"){
+                        str[j] = "";
+                    }
+                    var td = $("<td  class='text-c'>" + str[j] + "</td>");
+                    td.appendTo(tr);
+                }
+            }
+            $("#createtable").append("</table>");
+            // $("#mainContent").html(dates);
+        },
+        error: function (re) {
+            console.log('进入画表Ajax');
+        }
+        // console.log('进入画表Ajax'+data);
+    });}
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+
+</body>
+
+</html>

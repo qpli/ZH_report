@@ -50,7 +50,7 @@ public class LoginController {
     @ResponseBody
     public ModelAndView Top(){
         logger.info("进入TOP路由");
-        ModelAndView view = new ModelAndView("/T_top.html");
+        ModelAndView view = new ModelAndView("/employee/T_top.html");
         Employee user = hostHolder.getUser();
         view.addObject("user",user);
         view.addObject("reportLists",reportController.allReport());
@@ -76,12 +76,12 @@ public class LoginController {
      * 离线上传页面路由
      * @return
      */
-    @GetMapping(path = {"/loginSuccess"})
-    @ResponseBody
-    public ModelAndView loginSuccessIndex(){
-        ModelAndView view = new ModelAndView("/C_offlineCreateTable.html");
-        return view;
-    }
+//    @GetMapping(path = {"/loginSuccess"})
+//    @ResponseBody
+//    public ModelAndView loginSuccessIndex(){
+//        ModelAndView view = new ModelAndView("/C_offlineCreateTable.html");
+//        return view;
+//    }
 
     /**
      * 注册页面路由
@@ -99,15 +99,15 @@ public class LoginController {
      * 审核页面路由
      * @return
      */
-    @GetMapping(path = {"/checkTable1"})
-    @ResponseBody
-    public ModelAndView checkTable1(){
-        ModelAndView view = new ModelAndView("/C_checkTable1.html");
-        Employee user = hostHolder.getUser();
-        view.addObject("user",user);
-        view.addObject("reportLists",reportController.allReport());
-        return view;
-    }
+//    @GetMapping(path = {"/checkTable1"})
+//    @ResponseBody
+//    public ModelAndView checkTable1(){
+//        ModelAndView view = new ModelAndView("/C_checkTable1.html");
+//        Employee user = hostHolder.getUser();
+//        view.addObject("user",user);
+//        view.addObject("reportLists",reportController.allReport());
+//        return view;
+//    }
 
     /**
      * 测试注册
@@ -116,24 +116,24 @@ public class LoginController {
      * @param empId
      * @param rememberme
      * @return
-     */
-    @RequestMapping(path = {"/reg1"}, method = {RequestMethod.GET, RequestMethod.POST})
-    @ResponseBody
-    public String reg(@RequestParam("username") String username,
-                      @RequestParam("password") String password,
-                      @RequestParam("empId") String empId,
-                      @RequestParam(value="rember", defaultValue = "0") int rememberme){
-        Employee emp = new Employee();
-        emp.setName(username);
-        emp.setRoleId(1);
-        emp.setOrgId(1);
-        emp.setEmpId(empId);
-        emp.setSalt("sddfds");
-        emp.setPassword(password);
-        int res =  emp_service.addEmp(emp);
-
-        return " "+res;
-    }
+//     */
+//    @RequestMapping(path = {"/reg1"}, method = {RequestMethod.GET, RequestMethod.POST})
+//    @ResponseBody
+//    public String reg(@RequestParam("username") String username,
+//                      @RequestParam("password") String password,
+//                      @RequestParam("empId") String empId,
+//                      @RequestParam(value="rember", defaultValue = "0") int rememberme){
+//        Employee emp = new Employee();
+//        emp.setName(username);
+//        emp.setRoleId(1);
+//        emp.setOrgId(1);
+//        emp.setEmpId(empId);
+//        emp.setSalt("sddfds");
+//        emp.setPassword(password);
+//        int res =  emp_service.addEmp(emp);
+//
+//        return " "+res;
+//    }
 
 
     /**

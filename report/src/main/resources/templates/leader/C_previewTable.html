@@ -50,34 +50,6 @@
 					<div id="creatTable">
 
 					</div>
-					<!--<table class="table table-border table-bordered table-hover table-bg table-sort">-->
-							<!--<thead>-->
-								<!--<tr class="text-c">-->
-									<!--<th width="25"><input type="checkbox" name="" value=""></th>-->
-									<!--<th width="60">报表ID</th>-->
-									<!--<th width="100">报表名称</th>-->
-									<!--<th width="100">创建日期</th>-->
-									<!--<th width="200">创建人员</th>-->
-									<!--<th width="100">操作</th>-->
-								<!--</tr>-->
-							<!--</thead>-->
-							<!--<tbody>-->
-								<!--<tr class="text-c">-->
-									<!---->
-									<!--<c:forEach items="${sessionScope.reportinfos}" var="reportinfo">-->
-										<!--<td><input type="checkbox" value="1" name=""></td>-->
-										<!--<td>${reportinfo.reportId}</td>-->
-										<!--<td>${reportinfo.reportName}</td>-->
-										<!--<td>${reportinfo.reportName}</td>-->
-										<!--<td>${sessionScope.employee.name}</td>-->
-										<!--<td class="td-manage">-->
-											<!--<a  href="/checkTable?repoorId=reportinfo.reportID"  style="text-decoration:none"><i class="Hui-iconfont">审核</i></a>-->
-										<!--</td>-->
-									<!--</c:forEach>-->
-								<!--</tr>-->
-							<!--</tbody>-->
-						<!--</table>-->
-
 				</article>
 
 			</div>
@@ -117,20 +89,9 @@
                         tr.appendTo(table);
                         var str = data.finalreport[i].split("!,");
                         for (var j = 0; j < data.colInfo.length; j++) {
-                            // var td = "<td>"+str[j]+"</td>";
-                            // var val="";
-                            // if (data.rows[i][field] != null)//若第一行的第一列有数据，则将数据付给val
-                            // {
-                            //     if(data.rows[i][field] == "null"){
-                            //         val = "";
-                            //     }
-                            //     else{
-                            //         val = data.rows[i][field];
-                            //         // console.log("val1:"+val);//001
-                            //     }
-                            //
-                            // }
-                            // console.log("val2:"+val);//001
+							if (str[j] == "null"){
+							    str[j] = "";
+							}
                             var td = $("<td  class='text-c'>" + str[j] + "</td>");
                             td.appendTo(tr);
                         }
@@ -141,9 +102,7 @@
 		</script>
 		<script>
 		    $(function(){
-		      
 		        $(".headerpage").load("/top");
-		       
 		    });
 		</script>
 	</body>

@@ -45,7 +45,7 @@ public class ShowReportController {
     @RequestMapping(value = "/leaderShowFinalReport", method = {RequestMethod.POST})
     public ModelAndView leaderShowFinalReport(@RequestParam("reportId") Integer reportId,
                                               @RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
-                                              @RequestParam(value = "pageSize",defaultValue = "5") Integer pageSize) {
+                                              @RequestParam(value = "pageSize",defaultValue = "500") Integer pageSize) {
         ModelAndView view = new ModelAndView(new MappingJackson2JsonView());
         String[] conInfo;
         if(colInfoService.queryExcel(reportId).length==0||colInfoService.queryExcel(reportId)==null){

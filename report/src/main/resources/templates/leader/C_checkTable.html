@@ -99,7 +99,7 @@
             elem : '#test',
             // cellMinWidth: 100,
             method : 'post',
-            url : '/auditDisplayTest?reportId='+reportId // 数据接口
+            url : '/auditDisplay?reportId='+reportId // 数据接口
             ,page : true // 开启分页
             ,cols : [ [ // 表头
                 ,{type: 'checkbox',width:60}
@@ -116,7 +116,6 @@
         checkTable.reload();
         //监听性别操作
         form.on('switch(sexDemo)', function(obj){
-            // layer.tips(this.value + ' ' + this.name + '：'+ obj.elem.checked, obj.othis);
             var ids = this.value;
             var status = null;
             // console.log(obj.elem.checked);
@@ -130,44 +129,13 @@
                 url: "/audit/submit",
                 data: {"reportId":reportId,"ids":ids,"status":status},
                 success: function(data) {
-                    // console.log(data);
                     checkTable.reload();
-                    // if (data.code == "200") {
-                    //     fileId=encodeURIComponent(data.data);
-                    //     console.log(fileId);
-                    //     window.location.href =   "/get.do?id="+fileId;
-                    // }
-                    // else {
-                    //     $("#btn_login").attr("disabled", false);
-                    //     $("#btn_login").val("登陆");
-                    //     alert("用户或密码错误！");
-                    // }
                 }
             });
         });
 
     });
 
-    // $("#submit").click(function () {
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "",
-    //         data: {"reportId":reportId},
-    //         success: function(data) {
-    //             console.log(data);
-    //             if (data.code == "200") {
-    //                 fileId=encodeURIComponent(data.data);
-    //                 console.log(fileId);
-    //                 window.location.href =   "/get.do?id="+fileId;
-    //             }
-    //             else {
-    //                 $("#btn_login").attr("disabled", false);
-    //                 $("#btn_login").val("登陆");
-    //                 alert("用户或密码错误！");
-    //             }
-    //         }
-    //     });
-    // })
 </script>
 
 <script>

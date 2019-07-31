@@ -99,6 +99,60 @@ public class ReportController {
     }
 
     /**
+     * 队员查看报表
+     * @param response
+     * @param repoorId
+     * @return
+     */
+    @GetMapping(path = {"/TpreviewTable"})
+    @ResponseBody
+    public ModelAndView Tpreview(HttpServletResponse response,Integer repoorId){
+        ModelAndView view = new ModelAndView("/employee/T_previewTable.html");
+        ReportInfo reportInfo = reportService.getReportInfo(repoorId);
+        view.addObject("reportInfo",reportInfo);
+        return view;
+    }
+
+    /**
+     * 员工在线填写页面
+     * @param response
+     * @param repoorId
+     * @return
+     */
+    @GetMapping(path = {"/onlineFillIndex"})
+    @ResponseBody
+    public ModelAndView onlineFillIndex(HttpServletResponse response){
+        ModelAndView view = new ModelAndView("/employee/T_onlineUploadTable.html");
+        view.addObject("reportLists",allReport());
+        return view;
+    }
+
+    /**
+     * 员工在线填写页面
+     * @param response
+     * @param repoorId
+     * @return
+     */
+    @GetMapping(path = {"/tableInfo"})
+    @ResponseBody
+    public ModelAndView tableInfo(HttpServletResponse response ,Integer reportId){
+        ModelAndView view = new ModelAndView("/employee/Tableinfo.html");
+        String[] colInfo = colInfoService.queryExcel(reportId);
+        List<ColInfo> colInfos = new ArrayList<>();
+        for (int i = 0;i<colInfo.length;i++){
+            ColInfo col = new ColInfo();
+            col.setColName(colInfo[i]);
+            col.setColLoc(i+1);
+            colInfos.add(col);
+        }
+        view.addObject("colInfos",colInfos);
+//        view.addObject("colLocs",colLoc);
+        view.addObject("reportId",reportId);
+        return view;
+    }
+
+
+    /**
      * 团队长审核页面
      * @param response
      * @param repoorId
@@ -163,16 +217,20 @@ public class ReportController {
      */
     @PostMapping("/auditDisplay")
     @ResponseBody
-    public List<FillInfo> auditDisplay(Integer reportId){
-        System.out.println("ReportId: "+reportId);
-        return fillInfoService.fillReportAll(reportId);
-    }
-    @PostMapping("/auditDisplayTest")
-    @ResponseBody
     public  Map<String, Object> getUsersInfo(Integer reportId) {
         List<FillInfo> fillInfos = fillInfoService.fillReportAll(reportId);
+        //获取该报表的业务主键
+        String[] busskeys = fillInfoService.bussKeys(reportId);
+        //审核页面不显示业务主键列
+        for (String key:busskeys) {
+            for (int i = 0;i<fillInfos.size();i++) {
+                FillInfo fill = fillInfos.get(i);
+                if (fill.getColLoc() == Integer.valueOf(key)){
+                    fillInfos.remove(i);
+                }
+            }
+        }
         JSONArray data = ToJson(fillInfos);
-
         if (data != null) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("code", 0);
@@ -223,14 +281,16 @@ public class ReportController {
      */
     @PostMapping("/audit/submit")
     @ResponseBody
-    public JsonResult audit(int[] ids,int[] status,Integer reportId){
-        for(int i = 0 ; i<ids.length ; i++){
-            if (status[i] != 0){
-                fillInfoService.update(ids[i],status[i]);
+    public JsonResult audit(int ids,int status,Integer reportId){
+//        for(int i = 0 ; i<ids.length ; i++){
+            if (status != 0){
+                fillInfoService.update(ids,status);
             }
-        }
+//        }
         //审核完成后，需要将fill_info数据添加到final_report中
-        fillInfoService.fromFillToFinalReport(reportId);
+        if (status == 1){//审核通过将该列数据添加到final_report中
+            fillInfoService.fromFillToFinalReport(ids,reportId);
+        }
         return JsonResult.success();
     }
 
@@ -262,6 +322,7 @@ public class ReportController {
     @PostMapping("/onlineFill")
     @ResponseBody
     public JsonResult onLineFill(FinalReport finalReport){
+        System.out.println(finalReport);
         String empId = hostHolder.getUser().getEmpId();
         fillInfoService.onlineInsert(finalReport,empId);
         return  JsonResult.success();
@@ -328,21 +389,4 @@ public class ReportController {
         }
         return null;
     }
-
-//    @RequestMapping(path = {"/test"})
-//    @ResponseBody
-//    public ModelAndView loginIndex(){
-//        ModelAndView view = new ModelAndView("/test.html");
-//        view.addObject("test","名字");
-//        return view;
-//    }
-
-
-//    @GetMapping(path = {"/previewTable"})
-//    @ResponseBody
-//    public ModelAndView test(Integer repoorId){
-//        System.out.println("测试 :  "+repoorId);
-//        ModelAndView view = new ModelAndView("/test.html");
-//        return view;
-//    }
 }

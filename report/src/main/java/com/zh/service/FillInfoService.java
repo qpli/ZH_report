@@ -85,11 +85,23 @@ public class FillInfoService {
     }
 
     /**
-     * 将审核通过的数据填充到final_report表中
+     * 将审核通过的该列数据填充到final_report表中
      */
-    public void fromFillToFinalReport(Integer reportId){
+    public void fromFillToFinalReport(Integer id , Integer reportId){
         //查询该报表审核通过的列填写信息
-        List<FillInfo> fillInfos = fillInfoDAO.getPassFillInfo(reportId);
+        List<FillInfo> fillInfos = new ArrayList<>();
+        FillInfo fillInfo = fillInfoDAO.getPassFillInfo(id);
+        fillInfos.add(fillInfo);
+        //查询该报表的业务主键列填写信息加入到里面去
+        //获取报表业务主键信息
+        String[] bussKeys = bussKeys(reportId);
+        for (String key: bussKeys) {
+            FillInfo fillIn = fillInfoDAO.getKeyColFill(fillInfo.getEmpID(),Integer.valueOf(key),reportId);
+            if (fillIn != null){
+                fillInfos.add(fillIn);
+            }
+        }
+        if (fillInfos.size() == 1) return;
         insertFinalReport(reportId,fillInfos);
     }
 
