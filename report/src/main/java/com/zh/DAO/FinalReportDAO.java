@@ -57,6 +57,11 @@ public interface FinalReportDAO {
     FinalReport getInfoByBussKey(String jointWhereClause,Integer reportId);
 
 
-    @Select({" select * from ",TABLE_NAME," where report_id = #{report_id}"})
-    List<FinalReport> getInfoByReportId(Integer report_id);
+//    @Select({" select * from ",TABLE_NAME," where report_id = #{report_id} limit #{page},#{limit}"})
+    @Select({"select * from ( select *, ROW_NUMBER() OVER(Order by final_id desc) AS RowId from final_report where REPORT_ID =#{report_id} ) as b\n" +
+            "where RowId between #{start} and #{end}"})
+    List<FinalReport> getInfoByReportId(Integer report_id,Integer start,Integer end);
+
+    @Select({" select count(1) from ",TABLE_NAME," where report_id = #{report_id}"})
+    int getCount(Integer reportId);
 }

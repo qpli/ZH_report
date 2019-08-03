@@ -46,28 +46,28 @@ public class Emp_service {
     public Map<String, Object> register(String empId, String password,String empName,String orgName,Integer role_Id,Integer flag) {
         Map<String, Object> map = new HashMap<>();
         if (StringUtils.isBlank(empId)) {
-            map.put("msgId", "用户ID不能为空");
+            map.put("msg", "用户ID不能为空");
             return map;
         }
         if (StringUtils.isBlank(empName)) {
-            map.put("msgusename", "用户名不能为空");
+            map.put("msg", "用户名不能为空");
             return map;
         }
         if (StringUtils.isBlank(password)) {
-            map.put("msgpwd", "密码不能为空");
+            map.put("msg", "密码不能为空");
             return map;
         }
         if (StringUtils.isBlank(orgName)) {
-            map.put("magorg", "所属团队不能为空");
+            map.put("msg", "所属团队不能为空");
             return map;
         }
         if (role_Id==null) {
-            map.put("magrole", "角色名不能为空");
+            map.put("msg", "角色名不能为空");
             return map;
         }
         Employee emp = empdao.selectByEmpId(empId);
         if (emp != null) {
-            map.put("msgreg", "用户名已被注册");
+            map.put("msg", "用户名已被注册");
             return map;
         }
 //        if( ReportUtil.checkPassword(password)=="弱")
@@ -91,7 +91,7 @@ public class Emp_service {
             System.out.println("注册普通员工成功11111");
 
             if(orgService.selectByOrgName(orgName)==null||orgService.selectByOrgName(orgName).equals(null)){
-                map.put("msgorg", "普通用户注册，所属团队不存在");
+                map.put("msg", "普通用户注册，所属团队不存在");
                 return map;
             }
             else {
@@ -115,7 +115,7 @@ public class Emp_service {
             }
             else {
                 if(flag==0){
-                    map.put("msgorg", "该团队已经有团队长，不能重复覆盖");
+                    map.put("msg", "该团队已经有团队长，不能重复覆盖");
                     return map;
                 }
                 else {

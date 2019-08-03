@@ -10,9 +10,9 @@ import com.zh.service.FillInfoService;
 import com.zh.service.ReportService;
 import com.zh.util.JsonResult;
 import com.zh.util.PlatformException;
-import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
 import org.slf4j.Logger;
+import org.jxls.common.Context;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,9 +61,18 @@ public class ReportController {
         if (user.getRoleId() == 1){//团队长
             view = new ModelAndView("/leader/C_createReport.html");
         }else {//普通员工
-            view = new ModelAndView("/employee/T_offlineUploadTable_New.html");
+            view = new ModelAndView("/employee/T_uploadTable.html");
         }
         view.addObject("user",user);
+        view.addObject("reportLists",allReport());
+        return view;
+    }
+
+    @GetMapping(path = {"/writeIndex"})
+    @ResponseBody
+    public ModelAndView writeIndex(){
+        ModelAndView view = null;
+        view = new ModelAndView("/leader/C_uploadTable.html");
         view.addObject("reportLists",allReport());
         return view;
     }
@@ -116,21 +125,7 @@ public class ReportController {
     /**
      * 员工在线填写页面
      * @param response
-     * @param repoorId
-     * @return
-     */
-    @GetMapping(path = {"/onlineFillIndex"})
-    @ResponseBody
-    public ModelAndView onlineFillIndex(HttpServletResponse response){
-        ModelAndView view = new ModelAndView("/employee/T_onlineUploadTable.html");
-        view.addObject("reportLists",allReport());
-        return view;
-    }
-
-    /**
-     * 员工在线填写页面
-     * @param response
-     * @param repoorId
+     * @param
      * @return
      */
     @GetMapping(path = {"/tableInfo"})
@@ -364,7 +359,7 @@ public class ReportController {
             }
             //多余的报表列信息为空
             for (;i<20;i++){
-                context.putVar("COL"+i+1,"");
+                context.putVar("COL"+i+1,null);
             }
 
             JxlsHelper.getInstance().processTemplate(is, os, context);
@@ -374,6 +369,44 @@ public class ReportController {
             throw new PlatformException(e.getMessage());
         }
     }
+
+    /**
+     * 员工导出报表列信息
+     *
+     *    1)需要用你自己编写一个的excel模板
+     *    2)通常excel导出需要关联更多数据，因此yxcsInfoService.queryByCondition方法经常不符合需求，需要重写一个为模板导出的查询
+     *    3)参考ConsoleDictController来实现模板导入导出
+     *
+     * @param
+     * @return
+     */
+//    @PostMapping("/excel/export")
+//    @ResponseBody
+//    public JsonResult<String> export(Integer reportId){
+//        String reportName = reportService.getReportInfo(reportId).getReportName();
+//        String excelTemplate =reportName+"模板.xlsx";
+//
+//        File uploadFile = new File(excelTemplate);
+//        //先保存到本地
+//
+//        try {
+//           File fo = new File(excelTemplate);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        //本次导出需要的数据
+//        List<String> list = colInfoService.selectColNameByReportId(reportId);
+//       try {
+//           // fo = ExcelUtil.writeCollNameToExcelFile(list, excelTemplate);
+//
+//       }catch (Exception e){
+//
+//       }
+//        System.out.println(reportId);
+//        System.out.println("reportName:"+reportService.getReportInfo(reportId));
+//        return JsonResult.success(excelTemplate);
+//    }
+
 
     @GetMapping("/get.do")
     @ResponseBody

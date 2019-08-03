@@ -77,8 +77,8 @@ public class ExcelUtil {
                         String cell = null;
                             if (row.getCell(j) == null) {
                                 // 如果单元格元素为空
-                                cell =row.getCell(j)+"";
-                                list.add(cell);
+                                //cell =row.getCell(j)+"";
+                                list.add(" ");
                                 logger.info("进入catch   cell的内容："+JSON.toJSONString("null"));
                             } else {
                                 //如果单元格元素不为空
@@ -155,6 +155,8 @@ public class ExcelUtil {
         }
         return contentsOfRow;
     }
+
+
 
 
     /**
@@ -273,6 +275,38 @@ public class ExcelUtil {
         }
 
     }
+
+
+    /**
+     * 生成报表模板
+     * @param content
+     * @param filename
+     * @throws Exception
+     */
+    public static File writeCollNameToExcelFile(List<String> content, String filename,File file) throws Exception {
+
+        int sheetIndex = 0;
+        int rowIndex = 0;
+        int colIndex = 0;
+       // String filename = excelSet.getExcelFile().getAbsolutePath();
+
+        Workbook workbook = WorkbookFactory.create(new FileInputStream(filename));
+        Sheet sheet = workbook.getSheetAt(sheetIndex);
+        Row row = sheet.getRow(rowIndex);
+        for(int i=0;i<content.size();i++) {
+            Cell cell = row.getCell(i);
+            cell.setCellValue(content.get(i));
+        }
+        FileOutputStream fo = new FileOutputStream(file);
+        try {
+            workbook.write(fo);
+        } finally {
+            fo.flush();
+            fo.close();
+        }
+        return file;
+    }
+
 
     /**
      * 将ExcelSet对象存入文件

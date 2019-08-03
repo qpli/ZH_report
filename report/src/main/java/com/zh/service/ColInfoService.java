@@ -5,6 +5,8 @@ import com.zh.Entity.ColInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Author: lisq
  * @Date: 2019/7/25 15:02
@@ -41,8 +43,26 @@ public class ColInfoService {
      * @param reportId
      * @return
      */
-    public String[] queryExcel(Integer reportId){
+    public List<ColInfo> queryColInfo(Integer reportId){
         return colInfoDAO.queryExcel(reportId);
+    }
+    public String[] queryExcel(Integer reportId){
+        List<ColInfo> colInfos =  colInfoDAO.queryExcel(reportId);
+        String[] colNames = new String[colInfos.size()];
+        for (int i = 0;i<colInfos.size();i++) {
+            ColInfo colInfo = colInfos.get(i);
+            colNames[i] = colInfo.getColName();
+        }
+        return colNames;
+    }
+
+    /**
+     * 根据报表ID获取列名
+     * @param reportId
+     * @return
+     */
+    public List<String> selectColNameByReportId( Integer reportId){
+        return colInfoDAO.selectColNameByReportId(reportId);
     }
 
 }

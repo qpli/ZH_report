@@ -51,7 +51,7 @@
         <article class="cl pd-20">
             <input type="hidden" id="reportId" th:value="${reportInfo.reportId}">
             <!--<div class="mt-20">-->
-            <table class="layui-hide" id="test"></table>
+            <table class="layui-hide" id="check"></table>
 
             <script type="text/html" id="switchTpl">
                 <!-- 这里的 checked 的状态只是演示 -->
@@ -87,23 +87,20 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 
 <script>
-    var ids = new Array();
-    var status = new Array();
-
     var reportId = $("#reportId").val();
     layui.use('table', function(){
         var table = layui.table
             ,form = layui.form;
         var checkTable = null;
         checkTable = table.render({
-            elem : '#test',
+            elem : '#check',
             // cellMinWidth: 100,
             method : 'post',
             url : '/auditDisplay?reportId='+reportId // 数据接口
             ,page : true // 开启分页
             ,cols : [ [ // 表头
                 ,{type: 'checkbox',width:60}
-                ,{field:'id', title:'ID',  sort: true}
+                // ,{field:'id', title:'ID',  sort: true}
                 ,{field:'empId', title:'工号'}
                 ,{field:'name', title:'姓名'}
                 ,{field:'colName', title: '列名', minWidth:120, sort: true}

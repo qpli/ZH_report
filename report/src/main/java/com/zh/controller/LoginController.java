@@ -58,32 +58,6 @@ public class LoginController {
     }
 
     /**
-     * Top组件路由
-     * @return
-     */
-    @RequestMapping(path = {"/testOfflineUploadTable"})
-    @ResponseBody
-    public ModelAndView T_offlineUploadTable_New(){
-        ModelAndView view = new ModelAndView("/T_offlineUploadTable_New.html");
-        Employee user = hostHolder.getUser();
-        view.addObject("user",user);
-        view.addObject("reportLists",reportController.allReport());
-        return view;
-    }
-
-
-    /**
-     * 离线上传页面路由
-     * @return
-     */
-//    @GetMapping(path = {"/loginSuccess"})
-//    @ResponseBody
-//    public ModelAndView loginSuccessIndex(){
-//        ModelAndView view = new ModelAndView("/C_offlineCreateTable.html");
-//        return view;
-//    }
-
-    /**
      * 注册页面路由
      * @return
      */
@@ -93,48 +67,6 @@ public class LoginController {
         ModelAndView view = new ModelAndView("/Register.html");
         return view;
     }
-
-
-    /**
-     * 审核页面路由
-     * @return
-     */
-//    @GetMapping(path = {"/checkTable1"})
-//    @ResponseBody
-//    public ModelAndView checkTable1(){
-//        ModelAndView view = new ModelAndView("/C_checkTable1.html");
-//        Employee user = hostHolder.getUser();
-//        view.addObject("user",user);
-//        view.addObject("reportLists",reportController.allReport());
-//        return view;
-//    }
-
-    /**
-     * 测试注册
-     * @param username
-     * @param password
-     * @param empId
-     * @param rememberme
-     * @return
-//     */
-//    @RequestMapping(path = {"/reg1"}, method = {RequestMethod.GET, RequestMethod.POST})
-//    @ResponseBody
-//    public String reg(@RequestParam("username") String username,
-//                      @RequestParam("password") String password,
-//                      @RequestParam("empId") String empId,
-//                      @RequestParam(value="rember", defaultValue = "0") int rememberme){
-//        Employee emp = new Employee();
-//        emp.setName(username);
-//        emp.setRoleId(1);
-//        emp.setOrgId(1);
-//        emp.setEmpId(empId);
-//        emp.setSalt("sddfds");
-//        emp.setPassword(password);
-//        int res =  emp_service.addEmp(emp);
-//
-//        return " "+res;
-//    }
-
 
     /**
      * 用户注册
@@ -164,13 +96,16 @@ public class LoginController {
                     cookie.setMaxAge(3600*24*5);
                 }
                 response.addCookie(cookie);
+//                return "redirect:/successIndex";
                 return ReportUtil.getJSONString(0, "注册成功");
             } else {
-                return ReportUtil.getJSONString(1, map);
+//                return "redirect:/reg";
+                return ReportUtil.getJSONString(1, (String) map.get("msg"));
             }
 
         } catch (Exception e) {
             logger.error("注册异常" + e.getMessage());
+//            return "redirect:/reg";
             return ReportUtil.getJSONString(1, "注册异常");
         }
     }

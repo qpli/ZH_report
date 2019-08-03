@@ -4,15 +4,11 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport"
-          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="Bookmark" href="favicon.ico">
     <link rel="Shortcut Icon" href="favicon.ico"/>
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="lib/html5.js"></script>
-    <script type="text/javascript" src="lib/respond.min.js"></script>
-    <![endif]-->
+
     <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
     <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
@@ -23,10 +19,14 @@
     <script src="./js/xlsx.core.min.js"></script>
 
     <!--新加的内容结束-->
-    <!--[if IE 6]>
-    <script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js"></script>
-    <script>DD_belatedPNG.fix('*');</script>
-    <![endif]-->
+
+    <style>
+			#changesize {
+				font-size: xx-large;
+			}
+        </style>
+
+
     <!--/meta 作为公共模版分离出去-->
 
     <title>灵活报表管理系统</title>
@@ -37,60 +37,88 @@
 <body>
 
 <div class="headerpage"></div>
+
 <section class="Hui-article-box">
     <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 新建报表模板</nav>
+
     <div class="Hui-article">
         <article class="cl pd-20">
-            <div class="mt-20">
-                <form id="fromNewTpl" onsubmit="return false;" method="post">
-                    <div class="row cl">
-                        <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>报表名称：</label>
+              <!--离线上传按钮-->
+              <div class="mt-20">
+                    <button class="btn btn-primary radius" id="offline" style="float: left"> <i class="Hui-iconfont">&#xe600;</i>
+                        离线上传</button>
+                  <div id="show" style="display:none;margin-left: 250px;">
+                      <input type="file" id="excel-file"style="margin-right: 210px">
+                      <button type="button" id="shangchuan" class="btn btn-success radius">上传</button>
+                      <div style="margin-top: 5px;"><label style="color: red"><i>新建报表说明：请从excel中A1单元格开始填写一行列名</i></label></div>
+                  </div>
+
+                </div>
+			<!-- 下面-->
+            <div class="mt-20" style="margin-top: 30px; margin-left: 250px">
+                    <!--表名的div开始-->
+                    <div class="row cl" style="margin-bottom: 5px;">
+                        <label class="form-label col-xs-4 col-sm-2"><span
+                                class="c-red">*</span>报表名称：</label>
                         <div class="formControls col-xs-8 col-sm-9">
-                            <input type="text" class="input-text" value="" placeholder="" id="reportNameId"
-                                   name="reportName">
+                            <input type="text" class="input-text" value="" placeholder="" id="reportNameId" name="reportName"
+                                style="width: 50%;">
                         </div>
                     </div>
-                    <div id="div0_0">
-                        <div class="row cl" id="div1_0">
+                    <!--表名的div结束-->
+
+                    <!--列属性开始的的div-->
+                    <!-- <div id="div0_0"> -->
+                        <div>
+                        <div class="row cl">
                             <label class="form-label col-xs-4 col-sm-2" id="lebel0"><span
                                     class="c-red">*</span>列属性名：</label>
                             <div class="formControls col-xs-8 col-sm-9" id="div2_0">
-                                <input type="text" class="input-text" value="" placeholder="" id="input0"
-                                       name="colName">
-                                <div class="row cl" style="text-align:center;vertical-align:middle">
-                                    <input type="button" value="继续添加列属性" id="addBtn" class="btn btn-primary"/>
+                                <input type="text" class="input-text" value="" placeholder="" id="input0" name="colName"
+                                    style="width: 50%;">
+                                &nbsp;&nbsp;
+                                <button class="btn btn-success radius" id="addBtn" name=""><i
+                                        class="Hui-iconfont">&#xe600;</i>添加</button>
+
+                            </div>
+                        </div>
+                        <!--审核的的div-->
+                        <div style="margin: 10px;" class="col-sm-10">
+                            <label class="control-label form-label col-xs-3 col-sm-2">审核：</label>
+                            <input name="isCheck" type="radio" checked="checked" value="0" />否
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input name="isCheck" type="radio" value="1" />是
+                        </div>
+                    </div>
+
+                <!--表格内容-->
+                <div class="row cl" id="show2" style="display: none;">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10">
+
+                        <button type='button' class='btn btn-danger radius' onclick='deleteItem()'><i
+                                class='Hui-iconfont'>&#xe6e2;</i>批量删除</button>
+
+                        <div class="row cl" style="margin-top: 10px">
+                            <!--表格和发布-->
+                            <div class="form-label col-xs-2 col-sm-11">
+                                <!--表格-->
+                                <table class="table table-border table-bordered table-bg table-hover" name="tbl" id="tbl">
+                                    <thead>
+                                        <tr class="text-c">
+                                            <th width="75"><input type="checkbox" name="ifAll" ></th>
+                                            <th width="150">列属性名</th>
+                                            <th width="75">是否为业务主键</th>
+                                            <th width="100">操作</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div style="text-align: center;">
+                                    <!-- <a class="btn btn-primary radius" style="margin-top: 20px;"  id="FaBu_id"> 发布</a> -->
+                                    <button type="button" id="FaBu_id1" class="btn btn-primary" style="margin-top: 10px">发布</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-                <button type='button' class='btn btn-danger radius' onclick='deleteItem()'><i class='Hui-iconfont'>&#xe6e2;</i>批量删除
-                </button>
-                <button type='button' class='btn btn-primary' id="offline"><i class='Hui-iconfont'>&#xe645;</i>离线上传
-                </button>
-                <!-- 离线上传的框 -->
-                <div id="show" style="display:none;float: right">
-                    <input type="file" id="excel-file">
-                    <button type="button" id="shangchuan" class="btn btn-primary">上传</button>
-                </div>
-                <table class="table table-border table-bordered table-bg table-hover" name="tbl" id="tbl">
-                    <thead>
-                    <tr class="text-c">
-                        <th width="200"><input type="checkbox" name="ifAll" onclick="checkAll()"></th>
-                        <th>列属性名</th>
-                        <th width="200">是否为业务主键</th>
-                        <th width="200">操作</th>
-                    </tr>
-                    </thead>
-                </table>
-                <div class="row cl" style="text-align:center;vertical-align:middle">
-                    <div>
-                        <label class="control-label">是否需要审核</label>
-                        <input name="isCheck" type="radio" checked="checked" value="0"/>否
-                        <input name="isCheck" type="radio" value="1"/>是                         
-                    </div>
-                    <div>
-                        <button type="button" id="FaBu_id" class="btn btn-primary">发布</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
                 </div>
             </div>
@@ -130,13 +158,18 @@
         }
         // 获取form的值
         col_name = $("input[name='colName']").val();
-        var tr = $("<tr  class='text-c'><td><input type='checkbox'  id='selected'/></td><td>" + col_name + "</td><td align='center'><input type='checkbox' value=''  name='bussKey'></td><td><button type='button' class='btn btn-danger radius' onclick='deleteRow(this)'><i class='Hui-iconfont'>&#xe6e2;</i>删除</button></td></tr>");
+        var tr = $("<tr  class='text-c'><td><input type='checkbox'  id='selected'/></td><td>" + col_name + "</td><td align='center'><input type='checkbox' value=''  name='bussKey'></td><td><i class='Hui-iconfont' onclick='deleteRow(this)' style='font-size: x-large;'>&#xe6e2;</i></td></tr>");
         $("table").append(tr);
         // form重置，清除刚才表单填写的内容
         document.getElementById("input0").value = "";
+
+
+        var k = document.getElementById("show2");
+              k.style.display = "block";
     });
 
-    $('#FaBu_id').click(function () {
+    $('#FaBu_id1').click(function () {
+        console.log("开始发布");
         var arrTds = new Array();
         var groupTypeId = new Array();
         //此处可做表单验证
@@ -183,7 +216,7 @@
             data: postData,
             dataType: 'JSON',
             success: function (data) {
-                console.log(data);
+                console.log("data:"+data);
                 if (data.code === '200') {
                     //找打印下数据data
                     alert('报表创建成功');
@@ -204,26 +237,13 @@
             }
         });
     });
-    //点击离线上传事件
-    $("#offline").click(function () {
-        $("#show").toggle();//toggle() 的作用就是当对象是显示的就隐藏，当是隐藏的则显示。
-    });
-    //点击上传按钮事件
-    $("#shangchuan").click(function () {
-        $("#show").toggle();//toggle() 的作用就是当对象是显示的就隐藏，当是隐藏的则显示。
-        console.log("开始填充数据");
 
-        var len = arrAll.length;
-        for (var i = 0; i < len; i++) {
-            if (i == 0) {
-                $("#reportNameId").val(arrAll[0]);
-            }
-            else {
-                var tr = $("<tr  class='text-c'><td><input type='checkbox'  id='selected'/></td><td>" + arrAll[i] + "</td><td align='center'><input type='checkbox' value=''  name='bussKey'></td><td><button type='button' class='btn btn-danger radius' onclick='deleteRow(this)'><i class='Hui-iconfont'>&#xe6e2;</i>删除</button></td></tr>");
-                $("table").append(tr);
-            }
-        }
-    });
+
+	//点击离线上传事件
+$("#offline").click(function(){
+	$("#show").toggle();//toggle() 的作用就是当对象是显示的就隐藏，当是隐藏的则显示。
+  })
+
 
     $('#excel-file').change(function (e) {
         var fileType = $("#excel-file").val();
@@ -259,9 +279,10 @@
                 if (workbook.Sheets.hasOwnProperty(sheet)) {
                     fromTo = workbook.Sheets[sheet]['!ref'];// // 获取EXCEl文件中存在数据的行号和列号
                     console.log("fromTo:" + fromTo);//A1:C2
-                    for (var j = 0; j < 3; j++) {
-                        arrAll.push(workbook.Sheets[sheet][arr[j]].h);
-                        //excelHeadStr += workbook.Sheets[sheet][arr[j]].h + ','
+                    for (var j = 0; j < 20; j++) {
+                        if(workbook.Sheets[sheet][arr[j]] != null){
+                            arrAll.push(workbook.Sheets[sheet][arr[j]].h);
+                        }
                     }
                     console.log("arrAll:" + arrAll);//3月份员工考核数据,员工号,员工姓名,考核成绩
                     console.log("len:" + arrAll.length);
@@ -272,6 +293,25 @@
         fileReader.readAsBinaryString(files[0]);
 
     });
+
+    $("#shangchuan").click(function () {
+                    $("#show").toggle();
+					$("#show2").show();
+					$(".showTable").hide();
+					var len = arrAll.length;
+					for (var i = 0; i < len; i++) {
+
+						if (i == 0) {
+							$("#reportNameId").val(arrAll[0]);
+                            console.log("reportNameId:"+reportNameId);
+						}
+						else {
+							var tr = $("<tr  class='text-c'><td><input type='checkbox'  id='selected'/></td><td>" + arrAll[i] + "</td><td align='center'><input type='checkbox' value=''  name='bussKey'></td><td><i class='Hui-iconfont' onclick='deleteRow(this)' style='font-size: x-large;'>&#xe6e2;</i></td></tr>");
+							$("table").append(tr);
+						}
+					}
+				});
+
 
     // 删除按钮点击的一行
     function deleteRow(obj) {

@@ -14,15 +14,13 @@
     function hideURLbar() {
         window.scrollTo(0, 1);
     } </script>
-
     <!-- fonts -->
     <link href="http://fonts.googleapis.com/css?family=Muli:300,400" rel="stylesheet">
     <!-- /fonts -->
-
     <!-- css -->
     <link href="/css/register_css/register_bootstrap.css" rel="stylesheet" type='text/css' media="all"/>
     <link href="/css/register_css/register_style.css" rel="stylesheet" type='text/css' media="all"/>
-
+    <script type="application/javascript" src="js/reportJS/register.js"></script>
     <!-- /css -->
     <style>
         .test {
@@ -47,7 +45,7 @@
         <div class="form-group 小贝壳网站模板 w3 w3l">
             <label class="control-label">工号</label>
             <input type="text" class="form-control" id="petname_empid" name="empId" placeholder="Employee number"
-                   data-error="请输入工号" required>
+                   data-error="请输入姓名" required>
             <div class="help-block with-errors"></div>
         </div>
         <div class="form-group 小贝壳网站模板 w3 w3l">
@@ -64,17 +62,16 @@
                            placeholder="Password" required>
                     <div class="help-block">Minimum of 6 characters</div>
                 </div>
-
                 <div class="form-group col-sm-6 w3-agile">
                     <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword"
-                           data-match-error="Whoops, these don't match" data-error="请输入确认密码" placeholder="Confirm Password" required>
+                           data-match-error="Whoops, these don't match" placeholder="Confirm Password" required>
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
             <div class="form-group 小贝壳网站模板 w3 w3l">
                 <label class="control-label">所属团队</label>
                 <input type="text" class="form-control" id="petname_orgName" name="orgName" placeholder="Petname"
-                       data-error="所属团队不能为空！" required>
+                       data-error="请输入姓名" required>
 
                 <div class="help-block with-errors"></div>
             </div>

@@ -1,12 +1,13 @@
 package com.zh.DAO;
 
 import com.zh.Entity.ColInfo;
-import com.zh.Entity.FinalReport;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @Author: lisq
@@ -35,8 +36,19 @@ public interface ColInfoDAO {
      * @param reportId
      * @return
      */
-    @Select({"SELECT col_name\n" +
+    @Select({"SELECT *\n" +
             "  FROM ",tableName ," where REPORT_ID = #{reportId} order by col_loc"})
-    String[] queryExcel(@Param("reportId") Integer reportId);
+    List<ColInfo> queryExcel(@Param("reportId") Integer reportId);
+
+    /**
+     *根据报表名查列名
+     * @param reportId
+     * @param
+     * @return
+     */
+    @Select({"select col_name from "+tableName+" where REPORT_ID = #{reportId} order by col_loc" })
+    List<String> selectColNameByReportId(@Param("reportId") Integer reportId);
+
+
 
 }

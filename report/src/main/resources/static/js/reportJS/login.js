@@ -1,6 +1,5 @@
 
 $(function() {
-    console.log("进入JS")
     $('#form1').submit(function() { //当提交表单时，会发生 submit 事件。
         //此处可做表单验证
         if ($("#username").val() == "") {
